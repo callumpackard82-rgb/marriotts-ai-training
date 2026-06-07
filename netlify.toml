@@ -1,0 +1,6 @@
+# Always serve the latest HTML — never let a stale cached page mask an update.
+# Pages are tiny self-contained HTML files, so revalidating on each load is cheap.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
