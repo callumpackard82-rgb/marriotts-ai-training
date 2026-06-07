@@ -1,3 +1,9 @@
+# Serve files exactly as written. Netlify's asset post-processing (pretty URLs +
+# JS/HTML minification) was corrupting the inline onclick handlers in the module
+# pages (turning '...' into invalid \'...\'), which broke "Mark complete" saving.
+[build.processing]
+  skip_processing = true
+
 # Always serve the latest HTML — never let a stale cached page mask an update.
 # Pages are tiny self-contained HTML files, so revalidating on each load is cheap.
 [[headers]]
