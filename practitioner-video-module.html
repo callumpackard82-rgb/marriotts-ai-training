@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practitioner · Prompting for Video — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;--plum:#6d4a86;--plum-tint:#efe7f5;
+    --scene:#2563a8;--scene-bg:#e6eef8;--motion:#b4532a;--motion-bg:#f6e7de;
+    --cam:#0d6e63;--cam-bg:#e1efed;--styv:#7a4ca0;--styv-bg:#efe6f6;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--teal-deep)}
+  header{background:linear-gradient(155deg,#5a3d76 0%,#3f2a55 100%);color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(243,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--plum);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--plum-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--plum)}
+  .warn{background:#fbf3df;border:1px solid #e7d59b;border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .warn strong{color:#8a6516}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--plum);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt.rough{border-left-color:#b9b2a0;color:var(--ink-soft);font-style:italic}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--plum);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
+  .toggle-btn{background:var(--plum);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:#553a6e}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .frame{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 4px}
+  .frame .f{border-radius:12px;padding:14px 15px;border:1px solid var(--line)}
+  .frame .f h3{font-family:inherit;font-size:.95rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 4px}
+  .frame .f p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+  .f.scene{background:var(--scene-bg);border-color:#cfdcf0}.f.scene h3{color:var(--scene)}
+  .f.motion{background:var(--motion-bg);border-color:#ecd3c5}.f.motion h3{color:var(--motion)}
+  .f.cam{background:var(--cam-bg);border-color:#cfe3e0}.f.cam h3{color:var(--cam)}
+  .f.styv{background:var(--styv-bg);border-color:#ddccec}.f.styv h3{color:var(--styv)}
+  @media(max-width:560px){.frame{grid-template-columns:1fr}}
+  .hl{border-radius:4px;padding:1px 3px;font-weight:500}
+  .hl.scene{background:var(--scene-bg);box-shadow:inset 0 -2px 0 var(--scene)}
+  .hl.motion{background:var(--motion-bg);box-shadow:inset 0 -2px 0 var(--motion)}
+  .hl.cam{background:var(--cam-bg);box-shadow:inset 0 -2px 0 var(--cam)}
+  .hl.styv{background:var(--styv-bg);box-shadow:inset 0 -2px 0 var(--styv)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 2px;font-size:.82rem}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .dot.scene{background:var(--scene)}.dot.motion{background:var(--motion)}.dot.cam{background:var(--cam)}.dot.styv{background:var(--styv)}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+  .tab{border:1px solid var(--line);background:#fbfaf6;color:var(--ink-soft);padding:8px 14px;border-radius:9px 9px 0 0;font-size:.88rem;font-weight:600;cursor:pointer}
+  .tab.active{background:var(--card);color:var(--plum);border-bottom-color:var(--card);border-top:2px solid var(--plum)}
+  .tabpanel{display:none;border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:15px 16px;background:var(--card)}
+  .tabpanel.active{display:block}.tabpanel ul{margin:.3rem 0;padding-left:1.1rem}.tabpanel li{margin:.25rem 0;font-size:.93rem}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--plum)}.check-item.done{background:var(--plum-tint);border-color:var(--plum)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--plum);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--plum)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--plum)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#5a3d76,#3f2a55);color:#f3efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Practitioner · P4</span><span class="badge">ChatGPT · Gemini</span></div>
+    <h1>Prompting for video</h1>
+    <div class="meta"><span>⏱ About 15 minutes</span><span>🎯 Short clips, realistic expectations</span><span>🎬 Brief one clip</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">AI video looks like magic in the demos. In real use it's powerful but fiddly: short clips, the odd weird glitch, and tools that are still rolling out. Used with the right expectations it's brilliant for a lesson hook, a scene-setter, or visual B-roll — a Roman street coming to life, a cell dividing, a stormy coastline.</p>
+    <p>This module gives you the briefing recipe and, just as importantly, an honest sense of what it can't yet do — so you don't lose an evening to it.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>Brief it like a film director</h2>
+    <p>A video prompt is an image prompt plus <em>movement and time</em>. Four ingredients to describe:</p>
+    <div class="frame">
+      <div class="f scene"><h3>Scene &amp; subject</h3><p>What we see and where. "A bustling Roman market street with stalls and traders."</p></div>
+      <div class="f motion"><h3>Motion &amp; action</h3><p>What moves and how. "Traders gesturing, people walking past, a cart rolling through."</p></div>
+      <div class="f cam"><h3>Camera</h3><p>The shot and movement. "Slow push-in", "wide static shot", "drone fly-over".</p></div>
+      <div class="f styv"><h3>Style &amp; length</h3><p>Look, mood and duration. "Warm cinematic documentary style, ~8 seconds."</p></div>
+    </div>
+    <div class="warn"><strong>Set expectations honestly:</strong> clips are usually only a few seconds long, can take a while (or credits) to generate, and may produce glitches — wonky hands, drifting text, physics that's slightly off. Use it for <em>atmosphere and illustration</em>, never for anything where factual accuracy or perfect realism matters.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>From "do a Roman video" to a real brief</h2>
+    <div class="prompt rough"><span class="lbl">The rough ask</span>make a video about Roman times</div>
+    <button class="toggle-btn" onclick="toggleReveal('master')">See the director's brief ↓</button>
+    <div class="reveal" id="master">
+      <div class="prompt"><span class="lbl">The master video prompt (annotated)</span>
+        <span class="hl scene">A bustling street in Roman Britain, market stalls with pottery and bread, togas and tunics, warm morning light,</span>
+        <span class="hl motion">traders calling out and gesturing, citizens walking past, a wooden cart rolling slowly through the crowd,</span>
+        <span class="hl cam">slow cinematic push-in down the centre of the street,</span>
+        <span class="hl styv">warm, painterly documentary style, gentle ambient bustle, about 8 seconds, no on-screen text.</span>
+      </div>
+      <div class="legend"><span><i class="dot scene"></i> Scene</span><span><i class="dot motion"></i> Motion</span><span><i class="dot cam"></i> Camera</span><span><i class="dot styv"></i> Style &amp; length</span></div>
+      <div class="note" style="margin-top:14px"><strong>The director's eye is the lesson.</strong> "Slow push-in" and "about 8 seconds" turn a vague wish into something the tool can actually film. Keep the action simple — one or two things moving beats a chaotic crowd the model will mangle.</div>
+      <h3 style="margin-top:16px">Then preview critically</h3>
+      <p>Watch it back <em>before</em> you ever show a class — for glitches, anachronisms (a wristwatch in Roman Britain) and anything odd. Regenerate or simplify the action if needed.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Brief one short clip (or just storyboard it)</h2>
+    <p>Five minutes. If you have access to a video tool, generate a short hook clip. <strong>No access? The skill is the brief</strong> — write the full prompt and a one-line plan for how you'd use it.</p>
+    <div class="prompt"><span class="lbl">Fill in &amp; run (or storyboard)</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Create a short video clip: [scene and setting], [one or two things moving], [camera: slow push-in / wide static / fly-over], in a [style] style, about 8 seconds, no on-screen text. Keep the action simple and realistic.</span></div>
+    <h3 style="margin-top:18px">Where video generation lives — in your tool</h3>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(event,'v_gpt')">ChatGPT</button>
+      <button class="tab" onclick="showTab(event,'v_gem')">Gemini</button>
+      <button class="tab" onclick="showTab(event,'v_cop')">Copilot</button>
+      <button class="tab" onclick="showTab(event,'v_cla')">Claude</button>
+    </div>
+    <div class="tabpanel active" id="v_gpt"><ul><li>Video generation via OpenAI's <strong>Sora</strong> (availability and limits vary by plan/region).</li><li>Good at cinematic short clips from a detailed brief.</li></ul></div>
+    <div class="tabpanel" id="v_gem"><ul><li>Video generation via Google's <strong>Veo</strong> family (rolling out across Gemini tiers).</li><li>Tight Workspace integration if you build lessons in Slides.</li></ul></div>
+    <div class="tabpanel" id="v_cop"><ul><li>Copilot's strength is text and images rather than generated video — for a clip you'll typically use one of the dedicated video tools.</li><li>Still your go-to for anything involving real school data.</li></ul></div>
+    <div class="tabpanel" id="v_cla"><ul><li>Claude doesn't generate video — but it's excellent for <em>writing the brief / storyboard</em> before you generate elsewhere.</li></ul></div>
+    <div class="current"><div class="hd">Current as of June 2026</div>Video is the <em>fastest-moving</em> area here — tool names, access, clip length and quality change month to month. Treat specific product names as a snapshot; the director's-brief recipe is the durable bit.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint — video's sharper edges</span>
+    <h2>No real faces, and preview everything</h2>
+    <p>Video raises the stakes on a few fronts:</p>
+    <ul class="clean">
+      <li><strong>Never create video of real, identifiable people</strong> — pupils, staff or named individuals. AI "deepfakes" of real people are a serious safeguarding and data-protection issue. Keep all characters generic and fictional, and never upload a photo or clip of a child.</li>
+      <li><strong>Always preview before showing pupils.</strong> Generated video can contain odd, inappropriate or inaccurate moments — watch every second first.</li>
+      <li><strong>Mind copyright and music</strong> — avoid recognisable characters, branded content or copyrighted soundtracks in anything you share.</li>
+      <li><strong>Most video tools are consumer products</strong> with no school data agreement — so keep them to generic, no-real-data content only.</li>
+    </ul>
+    <p style="margin-bottom:0">Used for fictional atmosphere — a Roman street, a churning ocean — none of this is a problem. The line is real people and unchecked content.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <h2>Is your brief director-ready?</h2>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt"><strong>Scene &amp; motion</strong> — clear setting, and one or two simple things moving?</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt"><strong>Camera &amp; length</strong> — a named shot and a short, realistic duration?</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">Realistic expectations — atmosphere/illustration, not factual accuracy.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">No real people, and I'll preview every second before any class sees it.</div></div>
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me a strong example ↓</button>
+    <div class="reveal" id="exemplar"><div class="prompt" style="margin-top:6px"><span class="lbl">Strong brief — a science hook</span><span class="hl scene">A single plant cell viewed up close, semi-transparent, nucleus and chloroplasts visible,</span> <span class="hl motion">slowly dividing into two over the clip,</span> <span class="hl cam">macro shot, very slow zoom out,</span> <span class="hl styv">clean educational 3D-render style, about 6 seconds, no text.</span></div></div>
+    <h3 style="margin-top:20px">How confident are you briefing video?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> brief a short hook clip for an upcoming topic — keep the action simple, and preview before you use it.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>You've covered text, modes, images and video. The final Practitioner step ties it together: stop re-typing your best prompts and save them as a reusable custom assistant.</p>
+    <p style="margin-top:10px"><strong>Up next → Practitioner · P5: Build your own custom assistant</strong></p>
+    <div style="margin-top:22px">
+      <a href="practitioner-custom-assistant-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P4')<0){d.push('P4');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P4')<0){d.push('P4');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function showTab(e,id){var tabs=e.currentTarget.parentElement.querySelectorAll('.tab');tabs.forEach(function(t){t.classList.remove('active')});e.currentTarget.classList.add('active');document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('active')});document.getElementById(id).classList.add('active');}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

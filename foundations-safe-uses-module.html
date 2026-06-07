@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations · What Can I Safely Use It For — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --role:#2563a8;--role-bg:#e6eef8;--context:#0d6e63;--context-bg:#e1efed;
+    --constr:#b4532a;--constr-bg:#f6e7de;--format:#7a4ca0;--format-bg:#efe6f6;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--teal-deep)}
+  header{background:linear-gradient(155deg,#0d6e63 0%,#0a544c 100%);color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(243,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--teal-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--teal-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt.rough{border-left-color:#b9b2a0;color:var(--ink-soft);font-style:italic}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--teal-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .toggle-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--teal-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .uses{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+  .use{background:#fbfaf6;border:1px solid var(--line);border-radius:11px;padding:13px 15px;font-size:.92rem}
+  .use b{display:block;color:var(--teal-deep);margin-bottom:2px}
+  @media(max-width:560px){.uses{grid-template-columns:1fr}}
+  /* traffic light data table */
+  .tl{margin:16px 0}
+  .tl-row{display:flex;gap:12px;align-items:flex-start;border-radius:11px;padding:13px 15px;margin:8px 0;font-size:.93rem}
+  .tl-row .dot{flex:0 0 14px;width:14px;height:14px;border-radius:50%;margin-top:5px}
+  .tl-row.g{background:var(--safe-tint);border:1px solid #bfe0cb}.tl-row.g .dot{background:var(--safe)}
+  .tl-row.y{background:#fbf3df;border:1px solid #e7d59b}.tl-row.y .dot{background:#d9a528}
+  .tl-row.r{background:#fbeae6;border:1px solid #eac6bb}.tl-row.r .dot{background:#c0392b}
+  .tl-row b{display:block}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}
+  .shield{font-size:1.15rem}
+  .swap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .swap div{border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .swap .no{background:#fbeae6;border:1px solid #eac6bb}.swap .yes{background:#fff;border:1px solid #bfe0cb}
+  .swap .tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .swap .no .tag{color:var(--clay)}.swap .yes .tag{color:var(--safe)}
+  @media(max-width:560px){.swap{grid-template-columns:1fr}}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--teal)}.check-item.done{background:var(--teal-tint);border-color:var(--teal)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--teal)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--teal-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#0d6e63,#0a544c);color:#f3efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Foundations · F2</span><span class="badge">Tool-agnostic</span></div>
+    <h1>What can I safely use it for?</h1>
+    <div class="meta"><span>⏱ About 15 minutes</span><span>🎯 Real jobs, real time saved</span><span>🚦 The data traffic-light</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">The bits of teaching that eat your evenings — drafting the parents' email, rewording a worksheet for your lower-ability group, turning a scrawl of bullet points into a coherent plan — are exactly the bits AI is best at. Used well, it hands you back time.</p>
+    <p>But "used well" in a school means "used safely". This module gives you a menu of genuinely useful jobs <em>and</em> a simple traffic-light you can apply in two seconds to decide what's safe to type. Get this one habit and you can use AI with confidence for the rest of your career.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>It's a first-drafter and a thinking partner — you stay the expert</h2>
+    <p>The safe, high-value pattern is always the same: <strong>AI does the heavy lifting of a first version; you bring the professional judgement to check, adapt and decide.</strong> It never replaces you — it clears the blank page. A menu of where colleagues save the most time:</p>
+    <div class="uses">
+      <div class="use"><b>Drafting &amp; rewording</b>Newsletters, emails to parents, displays, letters — in the right tone.</div>
+      <div class="use"><b>Differentiation</b>Take one text or task and pitch it up or down a level for different groups.</div>
+      <div class="use"><b>Explaining &amp; analogies</b>Three ways to explain osmosis; an analogy a Year 5 will get.</div>
+      <div class="use"><b>Summarising</b>Boil a long document or article down to the key points (check it kept the right ones).</div>
+      <div class="use"><b>Ideas &amp; planning</b>Starters, plenaries, trip activities, assembly hooks when you're stuck.</div>
+      <div class="use"><b>Quizzes &amp; questions</b>Retrieval questions, comprehension, model answers, mark schemes.</div>
+    </div>
+    <div class="note">Notice what's <em>not</em> on the menu: making final decisions about a child, writing the actual content of a safeguarding record, or anything where being confidently-wrong would matter. Those stay human.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>Five tedious minutes, done in ten seconds</h2>
+    <p>A real, everyday job — turning rough notes into a parents' newsletter blurb. Note there's <strong>no pupil data</strong> in it at all:</p>
+    <div class="prompt rough"><span class="lbl">Rough notes you'd type</span>year 4 trip to the museum, romans, kids made mosaics and clay lamps, behaviour brilliant, thanks for packed lunches, more trips next term</div>
+    <button class="toggle-btn" onclick="toggleReveal('after')">See what comes back ↓</button>
+    <div class="reveal" id="after">
+      <div class="prompt"><span class="lbl">A usable first draft</span><em>"Year 4 had a wonderful day at the museum exploring life in Roman Britain. The children worked like real craftspeople — designing their own mosaics and shaping clay oil lamps — and their behaviour throughout was a real credit to them. A big thank-you to everyone who provided packed lunches; it made the day run smoothly. We're already looking forward to more trips next term!"</em></div>
+      <p>Two minutes of staring at a blank page, gone. You still read it, tweak the voice, and decide — but you started from a draft, not nothing. <strong>That's the whole value of AI in a nutshell.</strong></p>
+    </div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">4</span> <span class="shield">🛡️</span> Data-safety checkpoint — the big one</span>
+    <h2>The two-second traffic light</h2>
+    <p>Before you type anything into AI, glance at what you're about to paste and ask: <strong>"What colour is this?"</strong></p>
+    <div class="tl">
+      <div class="tl-row g"><span class="dot"></span><span><b>🟢 Green — go anywhere</b>Generic content with no real people in it: a worksheet on fractions, a generic parent email, an explanation of photosynthesis. Safe in any tool.</span></div>
+      <div class="tl-row y"><span class="dot"></span><span><b>🟡 Amber — approved tool, minimise first</b>School work that needs a little real context but can be anonymised: "a Year 9 set-3 pupil who struggles with focus". Use <strong>Copilot Chat with the green shield</strong> and include only what's needed.</span></div>
+      <div class="tl-row r"><span class="dot"></span><span><b>🔴 Red — stop, this isn't an AI task</b>Names with sensitive detail, SEND/EHCP records, safeguarding notes, medical info, special-category data, anything identifying a child. Don't paste it — follow your school's data protection policy and ask your DPO if unsure.</span></div>
+    </div>
+    <h3 style="margin-top:14px">Turn red into amber by anonymising</h3>
+    <div class="swap">
+      <div class="no"><span class="tag">✗ Red</span>"Write a target sheet for Aisha Khan, EHCP for autism, who melts down during unstructured time."</div>
+      <div class="yes"><span class="tag">✓ Amber (approved tool)</span>"Write a target sheet for a Year 6 autistic pupil who finds unstructured time difficult."</div>
+    </div>
+    <p style="font-size:.92rem;color:var(--ink-soft);margin-bottom:0"><strong>The standing rule:</strong> personal/consumer accounts only ever see green. Real school data — even amber — goes only into <strong>Microsoft 365 Copilot Chat, signed in with your school account, green shield showing</strong>. Even then: minimise, and never put red in.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">5</span> Your turn</span>
+    <h2>Pick one job and feel the time saved</h2>
+    <p>Choose a real (green) task from your week and run it. A few copy-and-go starters:</p>
+    <div class="prompt"><span class="lbl">Differentiation</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Rewrite this paragraph at three reading levels — below, at, and above expected for Year 7 — keeping the same key facts. Here is the paragraph: [paste a generic paragraph, no pupil data]</span></div>
+    <div class="prompt"><span class="lbl">Explaining</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Give me three different ways to explain [a tricky concept I teach] to a class that's struggling with it, including one everyday analogy.</span></div>
+    <div class="prompt"><span class="lbl">Admin</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Turn these rough bullet points into a warm, professional paragraph for a parents' newsletter: [your generic bullets, no names]</span></div>
+    <p style="font-size:.93rem;color:var(--ink-soft)">Run the traffic-light check first. If it's green, any tool's fine; if it strays amber, switch to Copilot with the green shield.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <h2>Are you safe to fly?</h2>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can name three jobs in my role AI genuinely helps with.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can sort a task into <strong>green / amber / red</strong> before I type it.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can take a "red" request and anonymise it down to "amber".</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know real school data only goes into Copilot Chat with the green shield.</div></div>
+
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me a worked sort ↓</button>
+    <div class="reveal" id="exemplar">
+      <div class="note" style="margin-top:6px"><strong>"Draft a generic homework policy paragraph"</strong> → 🟢 green, any tool. <strong>"Write feedback for a Year 8 pupil weak on long division"</strong> → 🟡 amber, Copilot green shield, no name. <strong>"Summarise this child's CAF/safeguarding history"</strong> → 🔴 red, not an AI task — that's for the proper system and your DSL.</div>
+    </div>
+
+    <h3 style="margin-top:20px">How confident is your traffic-light instinct?</h3>
+    <div class="lights">
+      <div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div>
+      <div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div>
+      <div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div>
+    </div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> pick the one admin job you dread most and let AI do the first draft — green data only.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>You know what it's for and what's safe. Last Foundations step: a quick tour of the four tools — Claude, ChatGPT, Gemini and Copilot — and which one to actually open.</p>
+    <p style="margin-top:10px"><strong>Up next → Foundations · F3: Which tool should I use?</strong></p>
+    <div style="margin-top:22px">
+      <a href="foundations-which-tool-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F2')<0){d.push('F2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F2')<0){d.push('F2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

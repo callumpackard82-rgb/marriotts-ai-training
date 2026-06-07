@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff AI Programme — Choose your pathway</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;
+    --plum:#6d4a86;--plum-deep:#553a6e;--plum-tint:#efe7f5;
+    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.18;letter-spacing:-.01em}
+  a{color:var(--teal-deep)}
+  /* hero */
+  header{background:linear-gradient(150deg,#0d6e63 0%,#0a544c 55%,#08443e 100%);color:#f3efe4;padding:54px 22px 48px;border-bottom:4px solid var(--amber);position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(232,176,75,.12)}
+  .header-inner{max-width:880px;margin:0 auto;position:relative}
+  .programme{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin:0 0 14px}
+  header h1{font-size:2.5rem;margin:0 0 .35rem;color:#fff;max-width:620px}
+  header p.sub{font-size:1.1rem;opacity:.92;margin:0;max-width:560px}
+  /* overall progress in hero */
+  .overall{display:flex;align-items:center;gap:18px;margin-top:26px;background:rgba(255,255,255,.1);border:1px solid rgba(243,239,228,.25);border-radius:14px;padding:16px 20px;max-width:430px}
+  .ring{--p:0;flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--amber) calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center}
+  .ring .inner{width:50px;height:50px;border-radius:50%;background:#0a544c;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600;font-size:1.05rem;color:#fff}
+  .overall .lbl{font-size:.92rem;opacity:.92}
+  .overall .lbl b{display:block;font-size:1.05rem;font-family:Georgia,serif;margin-bottom:1px}
+  /* sections */
+  section{margin:30px 0}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;box-shadow:var(--shadow)}
+  h2.sec{font-size:1.05rem;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-soft);font-family:-apple-system,sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.12em;margin:0 0 14px}
+  /* how it works */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .how .step{display:flex;gap:12px;align-items:flex-start}
+  .how .n{flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:var(--teal-tint);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600}
+  .how h3{margin:0 0 2px;font-size:1rem}
+  .how p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+  @media(max-width:620px){.how{grid-template-columns:1fr}}
+  /* safety banner */
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe);border-radius:14px;padding:18px 22px}
+  .safety h3{margin:0 0 4px;color:var(--safe);font-size:1.1rem;display:flex;align-items:center;gap:9px}
+  .safety p{margin:.3rem 0 0;font-size:.93rem}
+  .safety .tl{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .safety .chip{font-size:.82rem;font-weight:600;padding:4px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+  .safety .chip.g{color:var(--safe);border-color:#bfe0cb}.safety .chip.y{color:#a9791a;border-color:#e7d59b}.safety .chip.r{color:#b23b22;border-color:#eac6bb}
+  /* tool picker */
+  .tools-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+  .toolbtn{border:1px solid var(--line);background:#fbfaf6;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;font-weight:600;font-size:.92rem;transition:.15s;font-family:inherit;color:var(--ink)}
+  .toolbtn:hover{border-color:var(--teal)}
+  .toolbtn .em{font-size:1.5rem;display:block;margin-bottom:5px}
+  .toolbtn.sel{border-width:2px;border-color:var(--teal);background:var(--teal-tint)}
+  .toolbtn .star{display:none;font-size:.7rem;color:var(--safe);font-weight:700;margin-top:3px}
+  .toolbtn[data-tool="Copilot"] .star{display:block}
+  @media(max-width:620px){.tools-row{grid-template-columns:1fr 1fr}}
+  .tool-note{font-size:.86rem;color:var(--ink-soft);margin-top:12px;background:var(--safe-tint);border-radius:9px;padding:10px 13px}
+  /* pathway */
+  .pathway{border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);margin-top:22px}
+  .pw-head{padding:22px 26px;color:#fff;position:relative}
+  .pw-head .tag{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:600}
+  .pw-head h2{margin:.18rem 0 .2rem;font-size:1.7rem;color:#fff}
+  .pw-head p{margin:0;opacity:.93;font-size:.95rem;max-width:560px}
+  .pw-head .bar{height:7px;border-radius:99px;background:rgba(255,255,255,.25);margin-top:16px;overflow:hidden;max-width:340px}
+  .pw-head .bar span{display:block;height:100%;background:var(--amber);width:0;transition:width .5s ease}
+  .pw-head .barlbl{font-size:.8rem;opacity:.9;margin-top:6px;font-weight:600}
+  .pw-foundations .pw-head{background:linear-gradient(150deg,#0d6e63,#0a544c)}
+  .pw-practitioner .pw-head{background:linear-gradient(150deg,#6d4a86,#3f2a55)}
+  .pw-builder .pw-head{background:linear-gradient(150deg,#9a5b2d,#5e3818)}
+  .pw-body{background:var(--card);padding:14px 16px}
+  /* module card */
+  .mod{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:12px;transition:.15s;border:1px solid transparent}
+  .mod:hover{background:#fbfaf6;border-color:var(--line)}
+  .mod+.mod{border-top:1px solid var(--line);border-radius:0}
+  .mod:hover+.mod,.mod:hover{border-top-color:transparent}
+  .mod .toggle{flex:0 0 30px;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;transition:.15s;font-size:1rem;padding:0}
+  .mod .num{flex:0 0 auto;font-family:Georgia,serif;font-weight:600;color:var(--ink-soft);width:30px;text-align:center;font-size:.95rem}
+  .mod .body{flex:1;min-width:0}
+  .mod .body h3{margin:0;font-size:1.05rem;font-family:Georgia,serif}
+  .mod .body .meta{font-size:.82rem;color:var(--ink-soft);margin-top:1px}
+  .mod .open{flex:0 0 auto;font-size:.86rem;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:#fff;white-space:nowrap;transition:.15s}
+  .mod .open:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .mod.done{background:#f3f7f3}
+  .mod.done .body h3{color:var(--ink-soft)}
+  .pw-foundations .mod .toggle.on{background:var(--teal);border-color:var(--teal)}
+  .pw-practitioner .mod .toggle.on{background:var(--plum);border-color:var(--plum)}
+  .pw-builder .mod .toggle.on{background:var(--build);border-color:var(--build)}
+  .pw-foundations .mod .open:hover{background:var(--teal);border-color:var(--teal)}
+  .pw-practitioner .mod .open:hover{background:var(--plum);border-color:var(--plum)}
+  .pw-builder .mod .open:hover{background:var(--build);border-color:var(--build)}
+  @media(max-width:560px){.mod .num{display:none}.mod .open{padding:8px 11px}}
+  /* footer */
+  footer{text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+  footer button{background:none;border:none;color:var(--ink-soft);text-decoration:underline;cursor:pointer;font-size:.85rem;font-family:inherit}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <h1>Use AI well. Stay in control.</h1>
+    <p class="sub">A self-paced path from curious beginner to confident builder — pick your level, pick your tool, and learn what's useful for your role.</p>
+    <div class="overall">
+      <div class="ring" id="ring"><div class="inner" id="ringTxt">0%</div></div>
+      <div class="lbl"><b id="overallCount">0 of 13 modules</b>complete — pick up wherever you left off</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HOW IT WORKS -->
+  <section class="panel">
+    <h2 class="sec">How it works</h2>
+    <div class="how">
+      <div class="step"><div class="n">1</div><div><h3>Choose your level</h3><p>Foundations, Practitioner or Builder — start where you are, move up when ready.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>Pick your tool</h3><p>Each module shows how to do things in Claude, ChatGPT, Gemini or Copilot.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>Learn by doing</h3><p>Every module is ~15 minutes with a real, hands-on task and a self-check.</p></div></div>
+    </div>
+  </section>
+
+  <!-- SAFETY SPINE -->
+  <section class="safety">
+    <h3>🛡️ One rule runs through everything</h3>
+    <p>Never put identifiable pupil or staff data into an AI tool the school hasn't approved for it. For real school data, use <strong>Microsoft 365 Copilot Chat</strong>, signed in with your school account, with the <strong>green shield</strong> showing. Every module teaches the two-second traffic-light check:</p>
+    <div class="tl">
+      <span class="chip g">🟢 Generic — any tool</span>
+      <span class="chip y">🟡 Real but minimised — Copilot, green shield</span>
+      <span class="chip r">🔴 Sensitive — not an AI task</span>
+    </div>
+  </section>
+
+  <!-- TOOL PICKER -->
+  <section class="panel">
+    <h2 class="sec">Your preferred tool</h2>
+    <p style="margin:0 0 12px;font-size:.93rem;color:var(--ink-soft)">Pick the one you'll use most — we'll remember it. You can always switch inside any module.</p>
+    <div class="tools-row" id="toolsRow">
+      <button class="toolbtn" data-tool="Copilot"><span class="em">🟦</span>Copilot<span class="star">★ School-approved</span></button>
+      <button class="toolbtn" data-tool="Claude"><span class="em">🟧</span>Claude</button>
+      <button class="toolbtn" data-tool="ChatGPT"><span class="em">⬛</span>ChatGPT</button>
+      <button class="toolbtn" data-tool="Gemini"><span class="em">🔷</span>Gemini</button>
+    </div>
+    <div class="tool-note" id="toolNote">Tip: for anything involving real school data, Microsoft 365 Copilot Chat is the approved tool — whichever you prefer for everyday use.</div>
+  </section>
+
+  <!-- PATHWAYS -->
+  <div id="pathways"></div>
+
+  <!-- SYNC ACROSS DEVICES -->
+  <section class="panel">
+    <h2 class="sec">Using more than one computer?</h2>
+    <p style="margin:0 0 14px;font-size:.93rem;color:var(--ink-soft)">Your progress is saved on <em>this</em> device. To carry it to another computer (home, laptop, classroom PC), copy your progress code below, then paste it into the same box on the other device and press <strong>Load</strong>.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
+      <button onclick="makeCode()" style="flex:0 0 auto;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 18px;font-weight:600;font-size:.9rem;cursor:pointer;font-family:inherit">📤 Copy my progress code</button>
+      <input id="codeOut" readonly placeholder="your code will appear here" style="flex:1;min-width:200px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:.82rem;font-family:monospace;background:#fbfaf6;color:var(--ink-soft)">
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <input id="codeIn" placeholder="paste a code from another device…" style="flex:1;min-width:200px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:.82rem;font-family:monospace">
+      <button onclick="loadCode()" style="flex:0 0 auto;background:var(--ink);color:#fff;border:none;border-radius:10px;padding:12px 18px;font-weight:600;font-size:.9rem;cursor:pointer;font-family:inherit">📥 Load progress</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>Staff AI Programme · 13 modules across three pathways. Progress is saved in this browser on this device — use your progress code above to move between devices.</p>
+    <button onclick="resetProgress()">Reset my progress</button>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---- Module data ----
+  var PATHWAYS = [
+    { key:"foundations", tag:"Pathway 1 · Teal", title:"Foundations", blurb:"For the curious and the sceptical. What AI is, what it's safely for, and how to ask it well.",
+      modules:[
+        {id:"F1", t:"What is generative AI?", time:"12 min", f:"foundations-what-is-ai-module.html"},
+        {id:"F2", t:"What can I safely use it for?", time:"15 min", f:"foundations-safe-uses-module.html"},
+        {id:"F3", t:"Which tool should I use?", time:"14 min", f:"foundations-which-tool-module.html"},
+        {id:"F4", t:"Prompting basics", time:"15 min", f:"foundations-prompting-module.html"}
+      ]},
+    { key:"practitioner", tag:"Pathway 2 · Plum", title:"Practitioner", blurb:"For confident users getting good. Models, modes, images, video and your own custom assistants.",
+      modules:[
+        {id:"P1", t:"Choosing your model & thinking level", time:"14 min", f:"practitioner-model-thinking-module.html"},
+        {id:"P2", t:"Beyond chat: the power modes", time:"16 min", f:"practitioner-power-modes-module.html"},
+        {id:"P3", t:"Prompting for images", time:"15 min", f:"practitioner-images-module.html"},
+        {id:"P4", t:"Prompting for video", time:"15 min", f:"practitioner-video-module.html"},
+        {id:"P5", t:"Build your own custom assistant", time:"18 min", f:"practitioner-custom-assistant-module.html"}
+      ]},
+    { key:"builder", tag:"Pathway 3 · Copper", title:"Builder", blurb:"For those who want to make things. From live artefacts to vibe-coded tools you share responsibly.",
+      modules:[
+        {id:"B1", t:"From chat to artefact to app", time:"15 min", f:"builder-chat-to-app-module.html"},
+        {id:"B2", t:"Vibe-coding with Claude Code", time:"18 min", f:"builder-vibe-coding-module.html"},
+        {id:"B3", t:"The agentic-coding landscape", time:"12 min", f:"builder-agentic-landscape-module.html"},
+        {id:"B4", t:"Build & share a tool, responsibly", time:"16 min", f:"builder-share-responsibly-module.html"}
+      ]}
+  ];
+  var TOTAL = 13;
+
+  // ---- State (localStorage) ----
+  function getDone(){ try{ return JSON.parse(localStorage.getItem("saip_done")||"[]"); }catch(e){ return []; } }
+  function setDone(a){ try{ localStorage.setItem("saip_done", JSON.stringify(a)); }catch(e){} }
+  function getTool(){ try{ return localStorage.getItem("saip_tool")||""; }catch(e){ return ""; } }
+  function setTool(t){ try{ localStorage.setItem("saip_tool", t); }catch(e){} }
+
+  // ---- Render pathways ----
+  function render(){
+    var done = getDone();
+    var host = document.getElementById("pathways");
+    host.innerHTML = "";
+    PATHWAYS.forEach(function(pw){
+      var doneCount = pw.modules.filter(function(m){return done.indexOf(m.id)>-1;}).length;
+      var pct = Math.round(doneCount/pw.modules.length*100);
+      var cards = pw.modules.map(function(m){
+        var isDone = done.indexOf(m.id)>-1;
+        return '<div class="mod'+(isDone?' done':'')+'">'+
+          '<button class="toggle'+(isDone?' on':'')+'" onclick="toggle(\''+m.id+'\')" aria-label="Mark complete">'+(isDone?'✓':'')+'</button>'+
+          '<span class="num">'+m.id+'</span>'+
+          '<div class="body"><h3>'+m.t+'</h3><div class="meta">⏱ '+m.time+'</div></div>'+
+          '<a class="open" href="'+m.f+'">Open →</a>'+
+        '</div>';
+      }).join("");
+      var sec = document.createElement("section");
+      sec.className = "pathway pw-"+pw.key;
+      sec.innerHTML =
+        '<div class="pw-head"><span class="tag">'+pw.tag+'</span><h2>'+pw.title+'</h2><p>'+pw.blurb+'</p>'+
+          '<div class="bar"><span style="width:'+pct+'%"></span></div>'+
+          '<div class="barlbl">'+doneCount+' / '+pw.modules.length+' complete</div>'+
+        '</div>'+
+        '<div class="pw-body">'+cards+'</div>';
+      host.appendChild(sec);
+    });
+    // overall
+    var oc = done.length;
+    var opct = Math.round(oc/TOTAL*100);
+    document.getElementById("overallCount").textContent = oc+" of "+TOTAL+" modules";
+    document.getElementById("ringTxt").textContent = opct+"%";
+    document.getElementById("ring").style.setProperty("--p", opct);
+  }
+
+  function toggle(id){
+    var done = getDone();
+    var i = done.indexOf(id);
+    if(i>-1){ done.splice(i,1); } else { done.push(id); showToast(id+" marked complete ✓"); }
+    setDone(done);
+    render();
+  }
+
+  // ---- Tool preference ----
+  function renderTool(){
+    var t = getTool();
+    document.querySelectorAll(".toolbtn").forEach(function(b){
+      b.classList.toggle("sel", b.dataset.tool===t);
+    });
+    if(t){
+      var approved = (t==="Copilot");
+      document.getElementById("toolNote").innerHTML = approved
+        ? "Great choice — <strong>Copilot</strong> is the school-approved tool, so you're set for everyday use <em>and</em> real school data (green shield)."
+        : "You picked <strong>"+t+"</strong> — perfect for generic, no-data tasks. Remember: anything with real pupil or staff data goes into <strong>Microsoft 365 Copilot Chat</strong> (green shield) instead.";
+    }
+  }
+  document.getElementById("toolsRow").addEventListener("click", function(e){
+    var b = e.target.closest(".toolbtn"); if(!b) return;
+    setTool(b.dataset.tool); renderTool();
+  });
+
+  function resetProgress(){
+    if(confirm("Clear your completed-module ticks on this device?")){ setDone([]); render(); showToast("Progress reset"); }
+  }
+
+  var toastTimer;
+  function showToast(msg){
+    var el=document.getElementById("toast"); el.textContent=msg; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){el.classList.remove("show");},1700);
+  }
+
+  // ---- Cross-device progress code ----
+  function makeCode(){
+    var payload = { d:getDone(), t:getTool() };
+    var code;
+    try{ code = btoa(unescape(encodeURIComponent(JSON.stringify(payload)))); }catch(e){ showToast("Couldn't make a code"); return; }
+    var out = document.getElementById("codeOut");
+    out.value = code; out.select();
+    try{ navigator.clipboard.writeText(code); }catch(e){}
+    showToast("Progress code copied ✓");
+  }
+  function loadCode(){
+    var code = (document.getElementById("codeIn").value||"").trim();
+    if(!code){ showToast("Paste a code first"); return; }
+    try{
+      var payload = JSON.parse(decodeURIComponent(escape(atob(code))));
+      var cur = getDone();
+      (payload.d||[]).forEach(function(id){ if(cur.indexOf(id)<0) cur.push(id); });
+      setDone(cur);
+      if(payload.t) setTool(payload.t);
+      render(); renderTool();
+      document.getElementById("codeIn").value = "";
+      showToast("Progress loaded ✓");
+    }catch(e){ showToast("That code didn't look right"); }
+  }
+
+  function storageWorks(){ try{ localStorage.setItem("saip_test","1"); localStorage.removeItem("saip_test"); return true; }catch(e){ return false; } }
+
+  // Re-render whenever the page is shown — including when returning via the browser
+  // Back button (the back-forward cache), so completed modules are always up to date.
+  window.addEventListener("pageshow", function(){ render(); renderTool(); });
+
+  // If the browser is blocking saved data (e.g. a private/incognito window), say so plainly.
+  if(!storageWorks()){
+    var warn=document.createElement("div");
+    warn.style.cssText="max-width:880px;margin:16px auto 0;padding:13px 18px;background:#fbeae6;border:1px solid #eac6bb;border-radius:12px;color:#8a2b16;font-size:.9rem;line-height:1.5";
+    warn.innerHTML="⚠️ <strong>Saved progress is blocked in this browser right now.</strong> This usually means you're in a <strong>private/incognito window</strong>, or site data is switched off. Open the site in a normal window and your progress will save.";
+    var w=document.querySelector(".wrap"); if(w){ w.insertBefore(warn, w.firstChild); }
+  }
+
+  render(); renderTool();
+</script>
+</body>
+</html>

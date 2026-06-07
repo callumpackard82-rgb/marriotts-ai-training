@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder · The Agentic-Coding Landscape — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--clay:#b4532a;--amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--build-deep)}
+  code{background:#f0ece3;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;font-family:"SFMono-Regular",Consolas,monospace}
+  header{background:linear-gradient(155deg,#9a5b2d 0%,#5e3818 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(246,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--build);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--build);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--build-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--build-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--build);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--build-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--build);color:#fff;border-color:var(--build)}
+  .toggle-btn{background:var(--build);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--build-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .tc{border:1px solid var(--line);border-radius:13px;padding:15px 16px;background:#fbfaf6;border-top:3px solid var(--build)}
+  .tc h3{margin:0 0 1px;font-size:1.05rem}
+  .tc .by{font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+  .tc p{font-size:.9rem;margin:.45rem 0 0}
+  @media(max-width:560px){.cards{grid-template-columns:1fr}}
+  .durable{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;text-align:center}
+  .durable .d{background:var(--build-tint);border-radius:10px;padding:12px 8px;font-size:.85rem}
+  .durable .d .em{font-size:1.3rem;display:block;margin-bottom:3px}
+  .durable .d b{color:var(--build-deep)}
+  @media(max-width:560px){.durable{grid-template-columns:1fr}}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .docs{background:#eef3f6;border:1px dashed #a8c2d4;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .docs .hd{font-weight:700;color:#2f5f7d;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .docs ul{margin:.3rem 0 0;padding-left:1.1rem}.docs li{margin:.2rem 0}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--build)}.check-item.done{background:var(--build-tint);border-color:var(--build)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--build);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--build)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--build-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#9a5b2d,#5e3818);color:#f6efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Builder · B3</span><span class="badge">Survey of all four</span></div>
+    <h1>The agentic-coding landscape</h1>
+    <div class="meta"><span>⏱ About 12 minutes</span><span>🎯 Pick a lane, transfer the skill</span><span>🗺️ Survey + plan</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">Claude Code isn't the only agentic coder, and the field shifts month to month. The good news: they all work the same way, so the skill you built in B2 transfers to any of them. This module is a quick map so you can pick a lane and know what you're looking at.</p>
+    <p>Short and signposted on purpose — for Builders, the official docs are always more current than any course.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>Same engine, different badge</h2>
+    <p>Every agentic coder does the same thing: an AI that <strong>plans, writes, runs and debugs code</strong> while you steer. They differ mostly in which model powers them and where they live (terminal, IDE, cloud).</p>
+    <div class="cards">
+      <div class="tc"><h3>Claude Code / Cowork</h3><span class="by">Anthropic</span><p>Terminal- and app-based agent (you met it in B2). Strong all-rounder for building and refactoring.</p></div>
+      <div class="tc"><h3>Codex</h3><span class="by">OpenAI</span><p>OpenAI's agentic coding tool, available in the terminal, IDE and cloud.</p></div>
+      <div class="tc"><h3>Antigravity / Gemini CLI</h3><span class="by">Google</span><p>Google's agent-first coding IDE and command-line agent, powered by Gemini.</p></div>
+      <div class="tc"><h3>Copilot agent mode</h3><span class="by">Microsoft / GitHub</span><p>GitHub Copilot's agent can take a task and work across your files in the IDE.</p></div>
+    </div>
+    <div class="note"><strong>Don't agonise over the choice.</strong> Pick the one that fits the model you already like and the place you want to work, learn it well, and know the others exist. They converge faster than they diverge.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>The skills are the same in every lane</h2>
+    <p>Whichever tool you choose, these three durable habits are what produce good results — they're worth more than any tool-specific trick:</p>
+    <div class="durable">
+      <div class="d"><span class="em">📋</span><b>Clear specs</b><br>say exactly what "done" looks like</div>
+      <div class="d"><span class="em">🪜</span><b>Small steps</b><br>one change, test, then the next</div>
+      <div class="d"><span class="em">🔍</span><b>Review &amp; version control</b><br>read the diffs; use Git to undo safely</div>
+    </div>
+    <button class="toggle-btn" onclick="toggleReveal('vc')">Why version control matters ↓</button>
+    <div class="reveal" id="vc"><div class="note" style="margin-top:6px">Once you're past one-file tools, learn the basics of <strong>Git</strong> — it lets you snapshot working versions and roll back when the agent breaks something. Every tool above integrates with it. It's the seatbelt that makes confident building safe.</div></div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Pick a lane and plan a project</h2>
+    <p>Five minutes. Either reproduce your B2 tool in a different agent, or — more useful — pick your lane and scope a real project you'd build, using a spec prompt:</p>
+    <div class="prompt"><span class="lbl">A scoping prompt — run it in your chosen agent</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">I want to build [describe a small classroom tool]. Before writing any code, help me write a short spec: what it does, what "done" looks like, the smallest first version, and the steps to get there. Ask me anything you need. Use only synthetic example data.</span></div>
+    <div class="docs"><div class="hd">📚 Official docs to bookmark</div>
+      <ul>
+        <li><strong>Claude Code</strong> — Anthropic's Claude Code documentation</li>
+        <li><strong>Codex</strong> — OpenAI's Codex documentation</li>
+        <li><strong>Antigravity / Gemini CLI</strong> — Google's developer docs</li>
+        <li><strong>Copilot agent mode</strong> — GitHub Copilot documentation</li>
+      </ul>
+    </div>
+    <div class="current"><div class="hd">Current as of June 2026</div>This is the <em>fastest-moving</em> corner of the whole programme — names, availability and capabilities change constantly. Treat the tool list as a snapshot and always confirm against current official docs.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint</span>
+    <h2>Same power, same responsibilities</h2>
+    <p>Everything from B2 applies to <em>all</em> these tools — they run with real access to your machine and sometimes the cloud:</p>
+    <ul class="clean">
+      <li><strong>No pupil data, no secrets, in any repo</strong> — especially with cloud-based agents that upload your code. Use synthetic data only.</li>
+      <li><strong>Use private repositories</strong> for anything school-related; never push school code to a public repo.</li>
+      <li><strong>Protect credentials and API keys</strong> — keep them out of code and out of prompts.</li>
+      <li><strong>Check licensing and IT policy</strong> before installing developer tools or signing up for cloud coding services on school systems.</li>
+    </ul>
+    <p style="margin-bottom:0">You remain accountable for what any agent does in your name, in every lane.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can name the main agentic coders and who makes each.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I understand the underlying loop is the same across all of them.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know the three durable habits — specs, small steps, review &amp; version control.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I'll keep pupil data, secrets and school code out of public repos.</div></div>
+    <h3 style="margin-top:20px">Confidence with the landscape?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> bookmark your chosen tool's official docs and skim its getting-started guide.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>You can build. The final module is the most important one for a school: taking a tool from "works on my laptop" to "my colleagues use it" — safely, accessibly, and with the right sign-off.</p>
+    <p style="margin-top:10px"><strong>Up next → Builder · B4: Build &amp; share a classroom tool, responsibly</strong></p>
+    <div style="margin-top:22px">
+      <a href="builder-share-responsibly-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B3')<0){d.push('B3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B3')<0){d.push('B3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

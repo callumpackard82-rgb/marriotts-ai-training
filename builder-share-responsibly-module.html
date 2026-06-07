@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder · Build &amp; Share Responsibly — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--clay:#b4532a;--amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--build-deep)}
+  code{background:#f0ece3;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;font-family:"SFMono-Regular",Consolas,monospace}
+  header{background:linear-gradient(155deg,#9a5b2d 0%,#5e3818 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(246,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--build);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--build);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--build-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--build-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--build);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.93rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--build-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--build);color:#fff;border-color:var(--build)}
+  .toggle-btn{background:var(--build);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--build-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* the checklist framework */
+  .chk{counter-reset:c;margin:16px 0}
+  .chk .row{counter-increment:c;display:grid;grid-template-columns:auto 1fr;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:9px 0;background:#fbfaf6}
+  .chk .row::before{content:counter(c);width:28px;height:28px;background:var(--build);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600;font-size:.9rem}
+  .chk h3{margin:0 0 2px;font-size:1.02rem}
+  .chk p{margin:0;font-size:.91rem;color:var(--ink-soft)}
+  .chk .q{font-size:.85rem;color:var(--build-deep);font-weight:600;margin-top:4px;display:block}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .flags{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .flags div{border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .flags .stop{background:#fbeae6;border:1px solid #eac6bb}.flags .go{background:#fff;border:1px solid #bfe0cb}
+  .flags .tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .flags .stop .tag{color:var(--clay)}.flags .go .tag{color:var(--safe)}
+  @media(max-width:560px){.flags{grid-template-columns:1fr}}
+  .docs{background:#eef3f6;border:1px dashed #a8c2d4;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .docs .hd{font-weight:700;color:#2f5f7d;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--build)}.check-item.done{background:var(--build-tint);border-color:var(--build)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--build);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--build)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--build-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#1f7a4d,#0d5a36);color:#eef7f0;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.94}.next .arrow{font-size:1.7rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Builder · B4</span><span class="badge">The responsible last mile</span></div>
+    <h1>Build &amp; share a tool, responsibly</h1>
+    <div class="meta"><span>⏱ About 16 minutes</span><span>🎯 From "my laptop" to "my school"</span><span>📝 Draft a sign-off note</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">A working tool on your laptop is exciting. But the moment colleagues — or pupils — use it, you've crossed a line: you may now be processing other people's data, and you're responsible for it. The last mile is where good builders are separated from risky ones.</p>
+    <p>This module gives you a deployment checklist and, crucially, the habit of getting sign-off <em>before</em> you go live. It's the safety capstone of the whole programme.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>Six checks before anything goes live</h2>
+    <p>Run every tool you intend to share through these. If you can't answer the question, you're not ready to deploy.</p>
+    <div class="chk">
+      <div class="row"><div><h3>Purpose</h3><p>A clear, legitimate educational reason — not "because I could".<span class="q">Q: what problem does this solve, for whom?</span></p></div></div>
+      <div class="row"><div><h3>Data</h3><p>Ideally none. Keep it client-side, store no personal data, require no logins.<span class="q">Q: does it collect, store or send any personal data? If yes — stop and rethink.</span></p></div></div>
+      <div class="row"><div><h3>Hosting &amp; access</h3><p>Where it lives and who can reach it. A public link is public to the world.<span class="q">Q: who can access it, and is that the right audience?</span></p></div></div>
+      <div class="row"><div><h3>Accessibility</h3><p>Readable text, keyboard-usable, colour-contrast, works on school devices.<span class="q">Q: can every pupil and colleague actually use it?</span></p></div></div>
+      <div class="row"><div><h3>Review &amp; maintenance</h3><p>Who checks it still works, and who fixes it when it breaks?<span class="q">Q: are you committing to maintain it, or is it disposable?</span></p></div></div>
+      <div class="row"><div><h3>Sign-off</h3><p>The non-negotiable one. IT, your DPO, and SLT as appropriate — <em>before</em> launch.<span class="q">Q: who has approved this, in writing?</span></p></div></div>
+    </div>
+    <div class="note"><strong>The DPIA point:</strong> anything that processes personal data — especially pupils' — may need a <strong>Data Protection Impact Assessment</strong>. That's a conversation with your DPO, not a box you tick yourself. When in doubt, design the data out so you never need one.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>A revision-flashcards app, done right</h2>
+    <button class="toggle-btn" onclick="toggleReveal('demo')">See it pass the checks ↓</button>
+    <div class="reveal" id="demo">
+      <ul class="clean">
+        <li><strong>Purpose:</strong> self-quizzing for Year 11 on a topic — clear and educational. ✓</li>
+        <li><strong>Data:</strong> the questions are baked into the file; pupils' answers never leave their own browser; no names, no logins, nothing stored on a server. ✓</li>
+        <li><strong>Hosting:</strong> a single HTML file shared via the school's own platform (Teams/SharePoint), not a random public URL. ✓</li>
+        <li><strong>Accessibility:</strong> large text, high contrast, works by keyboard, tested on a school laptop. ✓</li>
+        <li><strong>Maintenance:</strong> you own it, and it's simple enough to update each year. ✓</li>
+        <li><strong>Sign-off:</strong> a quick note to IT confirming it stores no data, before sharing. ✓</li>
+      </ul>
+      <div class="note" style="margin-top:6px"><strong>The design move that makes it safe:</strong> the data was engineered <em>out</em>. No accounts, no storage, no personal data — so there's almost nothing to go wrong. That's the goal for every classroom tool.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Run a real idea through the checks</h2>
+    <p>Ten minutes. Take one tool you'd like to share, work it through the six checks, and draft the short note you'd send IT/your DPO. Use this to get an honest review from your AI tool first:</p>
+    <div class="prompt"><span class="lbl">Copy &amp; fill in</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Act as a school data protection adviser. Here's a tool I want to share with colleagues/pupils: [describe it, including exactly what data it touches]. Review it against: purpose, data minimisation, hosting/access, accessibility, maintenance, and sign-off needs. Tell me what to change to make it data-safe, and whether a DPIA is likely needed. Then help me draft a short note to IT and our DPO.</span></div>
+    <div class="docs"><div class="hd">📚 Ground it in your own policies</div>Your school's <strong>data protection policy, acceptable-use policy and online-safety policy</strong> are the real authorities here — read them, and talk to your DPO and IT lead early. Public guidance from the DfE and ICO on AI and data protection in schools is worth knowing too.</div>
+    <div class="current"><div class="hd">Current as of June 2026</div>Hosting options and approval routes vary by school and change over time. The six checks are durable; the specific people and platforms are local — confirm them for your setting.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint — the buck stops here</span>
+    <h2>Two lines you don't cross alone</h2>
+    <div class="flags">
+      <div class="stop"><span class="tag">✗ Stop — get sign-off first</span>Anything that stores pupil data, requires logins, is pupil-facing, sends data anywhere, or goes on a public URL.</div>
+      <div class="go"><span class="tag">✓ Lower-risk</span>A self-contained, no-data, no-login tool shared internally — still worth a quick IT heads-up.</div>
+    </div>
+    <ul class="clean">
+      <li><strong>Pupil-facing tools carry extra duties</strong> — safeguarding, age-appropriate content, and online-safety checks. A pupil using your tool is in your care.</li>
+      <li><strong>You are accountable</strong> for what your tool does with people's data, even if AI wrote every line. "The AI built it" is not a defence.</li>
+      <li><strong>Design the risk out</strong> — the safest tool collects no personal data at all. Reach for that first, every time.</li>
+    </ul>
+    <p style="margin-bottom:0">Never let "it works" become "it's live" without the sign-off step.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <p class="progress"><b id="pcount">0</b> of 5 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can list the six checks — purpose, data, hosting, accessibility, maintenance, sign-off.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I design tools to collect <strong>no personal data</strong> wherever possible.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know what a DPIA is and when to involve my DPO.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I get IT/DPO/SLT sign-off <em>before</em> anything goes live.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I accept I'm accountable for the tool, regardless of who (or what) wrote it.</div></div>
+    <h3 style="margin-top:20px">Confidence sharing responsibly?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> take one tool you've built, run the six checks, and send the sign-off note before you share it.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">🎉</span>
+    <h2>That's the whole programme complete</h2>
+    <p>Foundations, Practitioner, Builder — you can now use AI thoughtfully, safely and creatively, right up to building and sharing your own tools. The best next step is to put it to work and bring a colleague along with you.</p>
+    <p style="margin-top:10px"><strong>What now? → Share what you've built with the school's AI working group, and help someone start their Foundations pathway.</strong></p>
+    <div style="margin-top:22px">
+      <a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B4')<0){d.push('B4');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; finish — back to dashboard 🎉</a>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

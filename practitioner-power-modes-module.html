@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practitioner · The Power Modes — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;--plum:#6d4a86;--plum-tint:#efe7f5;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--teal-deep)}
+  header{background:linear-gradient(155deg,#5a3d76 0%,#3f2a55 100%);color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(243,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--plum);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--plum-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--plum)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--plum);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--plum);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
+  .toggle-btn{background:var(--plum);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:#553a6e}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .mode{border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:14px 0;background:#fbfaf6;border-left:4px solid var(--plum)}
+  .mode h3{margin:0 0 3px;display:flex;align-items:center;gap:9px;font-size:1.12rem}
+  .mode .em{font-size:1.25rem}
+  .mode .when{font-size:.82rem;color:var(--plum);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .mode p{font-size:.93rem;margin:.4rem 0 0}
+  .mode .ba{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:.86rem}
+  .mode .ba div{border-radius:8px;padding:9px 11px}
+  .mode .before{background:#f1ede6;color:var(--ink-soft)}
+  .mode .after{background:var(--plum-tint)}
+  .mode .ba .t{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+  @media(max-width:560px){.mode .ba{grid-template-columns:1fr}}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+  .tab{border:1px solid var(--line);background:#fbfaf6;color:var(--ink-soft);padding:8px 14px;border-radius:9px 9px 0 0;font-size:.88rem;font-weight:600;cursor:pointer}
+  .tab.active{background:var(--card);color:var(--plum);border-bottom-color:var(--card);border-top:2px solid var(--plum)}
+  .tabpanel{display:none;border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:15px 16px;background:var(--card)}
+  .tabpanel.active{display:block}.tabpanel ul{margin:.3rem 0;padding-left:1.1rem}.tabpanel li{margin:.25rem 0;font-size:.93rem}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--plum)}.check-item.done{background:var(--plum-tint);border-color:var(--plum)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--plum);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--plum)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--plum)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#5a3d76,#3f2a55);color:#f3efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Practitioner · P2</span><span class="badge">All four tools</span></div>
+    <h1>Beyond chat: the power modes</h1>
+    <div class="meta"><span>⏱ About 16 minutes</span><span>🎯 Canvas · Deep Research · Guided Learning</span><span>🧪 Try one mode</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">So far you've done everything in the chat box — type, scroll, type again. But your tool has a few <em>purpose-built modes</em> that do specific jobs far better than back-and-forth chatting: drafting a document, researching properly, or being tutored step by step.</p>
+    <p>Knowing they exist — and when to reach for each — is what separates a casual user from a confident one. You'll meet three, and try one for real.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>Three modes, three jobs</h2>
+    <p>Plain chat is great for quick exchanges. When the job is bigger, switch mode. All four tools have versions of these — only the names differ.</p>
+    <div class="mode">
+      <h3><span class="em">📝</span> Canvas / Artifacts / Pages</h3>
+      <span class="when">When: drafting or editing a document</span>
+      <p>Opens a proper editable document beside the chat. You and the AI work on the <em>same draft</em> — tweak a paragraph, ask for a rewrite of just one section — instead of the whole thing scrolling away each time.</p>
+      <div class="ba"><div class="before"><span class="t">Plain chat</span>Whole letter regenerates every time; you copy-paste to keep up.</div><div class="after"><span class="t">Canvas</span>Edit in place, select one line and refine it, watch it evolve.</div></div>
+    </div>
+    <div class="mode">
+      <h3><span class="em">🔎</span> Deep Research</h3>
+      <span class="when">When: you need a properly sourced overview</span>
+      <p>Sends the AI off to read many sources and come back with a longer, <em>cited</em> report — minutes of work instead of an instant guess. Brilliant for "give me the landscape on…", as long as you check the citations.</p>
+      <div class="ba"><div class="before"><span class="t">Plain chat</span>One quick answer, possibly out of date or invented.</div><div class="after"><span class="t">Deep Research</span>A structured report with links you can verify.</div></div>
+    </div>
+    <div class="mode">
+      <h3><span class="em">🎓</span> Guided Learning</h3>
+      <span class="when">When: you want to <em>learn</em>, not just be told</span>
+      <p>A tutor mode that walks you through something step by step, checking understanding and asking <em>you</em> questions — rather than dumping the answer. Superb for upskilling yourself, and a model worth knowing about for pupils too.</p>
+      <div class="ba"><div class="before"><span class="t">Plain chat</span>"Here's the answer" — you nod and forget it.</div><div class="after"><span class="t">Guided Learning</span>"Let's work it out together" — it sticks.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>Same task, the wrong way and the right way</h2>
+    <p>Job: write a one-page guide for parents on supporting reading at home.</p>
+    <button class="toggle-btn" onclick="toggleReveal('demo')">See the mode in action ↓</button>
+    <div class="reveal" id="demo">
+      <p><strong>In plain chat:</strong> the AI writes the whole guide; you spot the tone's a bit formal in paragraph two, ask it to redo — and the <em>entire</em> thing regenerates, losing the bits you liked.</p>
+      <p><strong>In Canvas:</strong> the guide opens as an editable document. You highlight just paragraph two and say "warmer, less formal". Only that paragraph changes. You tighten a heading yourself, ask it to add a bulleted "5-minute ideas" box, and you're done in half the time with none of the copy-paste.</p>
+      <div class="note" style="margin-top:6px"><strong>That's the pattern for all three modes:</strong> the right mode removes the friction the chat box was quietly adding.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Pick one mode and use it for real</h2>
+    <p>Five minutes. Choose the mode that fits a real job this week and run it:</p>
+    <div class="prompt"><span class="lbl">Canvas — drafting</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Open this in a canvas/document. Draft a one-page guide for parents on supporting reading at home with a Year 3 child. Friendly tone, a short intro, five practical tips, and a "5-minute ideas" box. We'll edit it together.</span></div>
+    <div class="prompt"><span class="lbl">Deep Research — investigating</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Use Deep Research. Give me a sourced overview of effective, evidence-based strategies for improving reading fluency at Key Stage 2, with citations I can check.</span></div>
+    <div class="prompt"><span class="lbl">Guided Learning — upskilling yourself</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Use Guided Learning / tutor mode. Teach me how retrieval practice works and how to build it into my lessons. Ask me questions as we go rather than just explaining.</span></div>
+    <h3 style="margin-top:18px">Where these modes live — in your tool</h3>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(event,'m_cop')">Copilot</button>
+      <button class="tab" onclick="showTab(event,'m_cla')">Claude</button>
+      <button class="tab" onclick="showTab(event,'m_gpt')">ChatGPT</button>
+      <button class="tab" onclick="showTab(event,'m_gem')">Gemini</button>
+    </div>
+    <div class="tabpanel active" id="m_cop"><ul><li>Document surface = <strong>Pages</strong>; research via Copilot's <strong>web/research</strong> options. Tutor-style learning works by asking Copilot to "teach me step by step".</li><li>Reminder: this is the tool to use when any real school data is involved.</li></ul></div>
+    <div class="tabpanel" id="m_cla"><ul><li>Document surface = <strong>Artifacts</strong>; research via Claude's <strong>Research / web search</strong>. For tutoring, ask Claude to act as a step-by-step tutor.</li></ul></div>
+    <div class="tabpanel" id="m_gpt"><ul><li>Document surface = <strong>Canvas</strong>; <strong>Deep Research</strong> is a selectable mode; <strong>Study / Guided Learning</strong> mode for tutoring.</li></ul></div>
+    <div class="tabpanel" id="m_gem"><ul><li>Document surface = <strong>Canvas</strong>; <strong>Deep Research</strong> available; <strong>Guided Learning</strong> mode for step-by-step tutoring. Handy alongside Google Docs.</li></ul></div>
+    <div class="current"><div class="hd">Current as of June 2026</div>These modes are added, renamed and merged often. If a name here has changed, look for the nearest equivalent — the three <em>jobs</em> (draft a document, research with sources, be tutored) are what endure.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint</span>
+    <h2>Research mode reads the open web — so check it</h2>
+    <p>Two topic-specific risks here:</p>
+    <ul class="clean">
+      <li><strong>Deep Research can be wrong or biased.</strong> It summarises whatever it finds online — which includes rubbish. <em>Always</em> open the citations and verify before you put anything in front of pupils or parents. Treat it as a well-read starting point, not gospel.</li>
+      <li><strong>Modes don't change the data rule.</strong> Don't paste real pupil or staff data into a research prompt or a canvas on a personal account. Anything touching real data goes into <strong>Microsoft 365 Copilot Chat with the green shield</strong>, and even then — minimise.</li>
+    </ul>
+    <p style="margin-bottom:0">Every example prompt above is deliberately generic — no real child needed to learn the mode.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <h2>Do you know which mode to reach for?</h2>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can name the three modes and the job each is for.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know to use a <strong>canvas</strong> when I'm drafting and editing a document.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know to <strong>verify the citations</strong> from Deep Research before trusting it.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I found where at least one of these modes lives in my preferred tool.</div></div>
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me a worked choice ↓</button>
+    <div class="reveal" id="exemplar"><div class="note" style="margin-top:6px"><strong>"Polish our department's marking policy"</strong> → Canvas (edit a living document). <strong>"What does the research say about homework at KS2?"</strong> → Deep Research (then check the sources). <strong>"Help me actually understand cognitive load theory"</strong> → Guided Learning.</div></div>
+    <h3 style="margin-top:20px">How confident are you with the modes?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> next time you'd draft a document in the chat box, open a canvas instead — and edit in place.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>You've mastered the text modes. Now for something more visual: getting AI to produce <em>usable</em> classroom images instead of garbled messes.</p>
+    <p style="margin-top:10px"><strong>Up next → Practitioner · P3: Prompting for images</strong></p>
+    <div style="margin-top:22px">
+      <a href="practitioner-images-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P2')<0){d.push('P2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P2')<0){d.push('P2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function showTab(e,id){var tabs=e.currentTarget.parentElement.querySelectorAll('.tab');tabs.forEach(function(t){t.classList.remove('active')});e.currentTarget.classList.add('active');document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('active')});document.getElementById(id).classList.add('active');}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

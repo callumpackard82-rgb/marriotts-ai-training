@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder · Vibe-Coding with Claude Code — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--clay:#b4532a;--amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--build-deep)}
+  code{background:#f0ece3;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;font-family:"SFMono-Regular",Consolas,monospace}
+  header{background:linear-gradient(155deg,#9a5b2d 0%,#5e3818 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(246,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--build);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--build);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--build-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--build-deep)}
+  .warn{background:#fbeae6;border:1px solid #eac6bb;border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .warn strong{color:var(--clay)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--build);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--build-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--build);color:#fff;border-color:var(--build)}
+  .toggle-btn{background:var(--build);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--build-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .loop{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0;text-align:center}
+  .loop .s{background:#fbfaf6;border:1px solid var(--line);border-radius:11px;padding:13px 8px;font-size:.86rem;position:relative}
+  .loop .s .em{font-size:1.4rem;display:block;margin-bottom:4px}
+  .loop .s b{color:var(--build-deep)}
+  @media(max-width:560px){.loop{grid-template-columns:1fr 1fr}}
+  .chat{background:#fbfaf6;border:1px solid var(--line);border-radius:12px;padding:6px;margin:12px 0}
+  .msg{border-radius:9px;padding:10px 13px;margin:6px;font-size:.92rem}
+  .msg.you{background:var(--build-tint);margin-left:34px}
+  .msg.ai{background:#fff;border:1px solid var(--line);margin-right:34px}
+  .msg .who{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);display:block;margin-bottom:2px}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .docs{background:#eef3f6;border:1px dashed #a8c2d4;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .docs .hd{font-weight:700;color:#2f5f7d;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--build)}.check-item.done{background:var(--build-tint);border-color:var(--build)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--build);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--build)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--build-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#9a5b2d,#5e3818);color:#f6efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Builder · B2</span><span class="badge">Claude Code / Cowork</span></div>
+    <h1>Vibe-coding with Claude Code</h1>
+    <div class="meta"><span>⏱ About 18 minutes</span><span>🎯 Build by describing, not typing code</span><span>🔧 One real tool</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">Artefacts are great for one-file tools. When you want something bigger — multiple files, that reads your data, that you keep improving — you want an <strong>agentic coder</strong>: an AI that works inside your actual files, runs commands, tests its own work and fixes its own errors while you steer in plain English. People call it "vibe coding".</p>
+    <p>Claude Code is the example here. You describe what you want; it builds, runs, and shows you. You stay the architect and reviewer.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>A tight loop you drive</h2>
+    <p>Vibe coding isn't "AI does it all". It's a fast loop where you bring judgement and direction:</p>
+    <div class="loop">
+      <div class="s"><span class="em">🗣️</span><b>Describe</b><br>say what you want, plainly</div>
+      <div class="s"><span class="em">⚙️</span><b>It builds</b><br>writes &amp; runs the code</div>
+      <div class="s"><span class="em">👀</span><b>You test</b><br>try it, read what it did</div>
+      <div class="s"><span class="em">🔁</span><b>Refine</b><br>"now change this"</div>
+    </div>
+    <div class="note"><strong>The skills that make it work</strong> are not coding skills — they're <em>specification</em> (say clearly what "done" looks like), <em>small steps</em> (one change at a time), and <em>review</em> (read and test what it produced rather than trusting blindly). Keep the first project tiny.</p></div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>Building a "merit points tracker" by conversation</h2>
+    <button class="toggle-btn" onclick="toggleReveal('demo')">See the loop in action ↓</button>
+    <div class="reveal" id="demo">
+      <div class="chat">
+        <div class="msg you"><span class="who">You</span>Build a simple web tool to tally house points for four houses, with + and − buttons and a reset. Single page, saved in the browser so it survives a refresh.</div>
+        <div class="msg ai"><span class="who">Claude Code</span>Created <code>index.html</code> with four counters, buttons, and local storage. Want me to open it so you can try it?</div>
+        <div class="msg you"><span class="who">You</span>Yes. Also make the leading house highlighted in gold.</div>
+        <div class="msg ai"><span class="who">Claude Code</span>Done — the highest score now gets a gold border. Tested with sample values; it updates live. Anything else?</div>
+        <div class="msg you"><span class="who">You</span>Perfect. Add a button to export the totals as a CSV.</div>
+      </div>
+      <div class="note" style="margin-top:6px"><strong>Notice:</strong> you never saw the code unless you wanted to. You specified, it built and tested, you reviewed and refined. Small steps, each one checked. That's the whole craft.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Build one tiny tool end-to-end</h2>
+    <p>Ten minutes. Open Claude Code (or Cowork), start in an empty folder, and build something small and real — then refine it twice.</p>
+    <div class="prompt"><span class="lbl">A first project prompt</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">In this empty folder, build a single-file web tool: a lesson countdown timer with preset buttons (1, 5, 10 minutes), a big readable display, and a gentle sound when it finishes. No external libraries. Open it so I can test it, then wait for my feedback.</span></div>
+    <p style="font-size:.93rem;color:var(--ink-soft)"><strong>No install yet?</strong> Do the gentler version in Claude Artifacts (the rung-1 route from B1) — the describe→test→refine loop is identical; only the power differs.</p>
+    <div class="docs"><div class="hd">📚 Set-up &amp; docs</div>Install and getting-started instructions live in the official <strong>Claude Code documentation</strong> (and Cowork in the Claude apps). Check with IT before installing developer tools on a managed school device.</div>
+    <div class="current"><div class="hd">Current as of June 2026</div>Install steps, commands and the Cowork interface evolve quickly — always follow the current official docs rather than memorised steps.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint — agentic tools have real reach</span>
+    <h2>It can read, run and change things — so supervise it</h2>
+    <p>An agentic coder is more powerful than a chat box: it can open files, run commands and modify your machine. With that power come real responsibilities:</p>
+    <ul class="clean">
+      <li><strong>Work in a clean, dedicated folder</strong> — never point it at folders containing pupil data, safeguarding files or sensitive documents.</li>
+      <li><strong>Read what it's about to do</strong> before approving commands that delete, install, or send anything. Don't rubber-stamp.</li>
+      <li><strong>No secrets or pupil data in your code or test data</strong> — use synthetic examples ("House 1", "Pupil A"). Never commit API keys, passwords or personal data.</li>
+      <li><strong>It's still on a managed school system</strong> — follow your acceptable-use and data-protection policies, and loop in IT.</li>
+    </ul>
+    <div class="warn"><strong>Golden rule:</strong> you are accountable for everything the agent does in your name. Supervise it like a capable but over-eager trainee.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can describe the describe → build → test → refine loop.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I built (or Artifact-built) a small tool and refined it in plain English.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I work in a clean folder and review commands before approving them.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">No pupil data, secrets or sensitive folders anywhere near the agent.</div></div>
+    <h3 style="margin-top:20px">Confidence with vibe coding?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> build one genuinely useful classroom utility and actually use it in a lesson.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>Claude Code is one of several. Next, the wider agentic-coding map — Codex, Gemini Antigravity and friends — so you can pick a lane and transfer the same skill.</p>
+    <p style="margin-top:10px"><strong>Up next → Builder · B3: The agentic-coding landscape</strong></p>
+    <div style="margin-top:22px">
+      <a href="builder-agentic-landscape-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B2')<0){d.push('B2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B2')<0){d.push('B2');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

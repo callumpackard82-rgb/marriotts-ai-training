@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder · From Chat to App — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--build-deep)}
+  code{background:#f0ece3;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;font-family:"SFMono-Regular",Consolas,monospace}
+  header{background:linear-gradient(155deg,#9a5b2d 0%,#5e3818 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(246,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--build);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--build);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--build-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--build-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--build);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--build-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--build);color:#fff;border-color:var(--build)}
+  .toggle-btn{background:var(--build);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--build-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .ladder{margin:16px 0}
+  .rung{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;border:1px solid var(--line);border-left:4px solid var(--build);border-radius:11px;padding:14px 16px;margin:9px 0;background:#fbfaf6}
+  .rung .lvl{width:30px;height:30px;border-radius:8px;background:var(--build);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600}
+  .rung h3{margin:0 0 2px;font-size:1.05rem}
+  .rung p{margin:0;font-size:.92rem;color:var(--ink-soft)}
+  .rung .eff{font-size:.78rem;color:var(--build);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+  .tab{border:1px solid var(--line);background:#fbfaf6;color:var(--ink-soft);padding:8px 14px;border-radius:9px 9px 0 0;font-size:.88rem;font-weight:600;cursor:pointer}
+  .tab.active{background:var(--card);color:var(--build-deep);border-bottom-color:var(--card);border-top:2px solid var(--build)}
+  .tabpanel{display:none;border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:15px 16px;background:var(--card)}
+  .tabpanel.active{display:block}.tabpanel ul{margin:.3rem 0;padding-left:1.1rem}.tabpanel li{margin:.25rem 0;font-size:.93rem}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .docs{background:#eef3f6;border:1px dashed #a8c2d4;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .docs .hd{font-weight:700;color:#2f5f7d;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--build)}.check-item.done{background:var(--build-tint);border-color:var(--build)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--build);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--build)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--build-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#9a5b2d,#5e3818);color:#f6efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Builder · B1</span><span class="badge">Mainly Claude / ChatGPT / Gemini</span></div>
+    <h1>From chat to artefact to app</h1>
+    <div class="meta"><span>⏱ About 15 minutes</span><span>🎯 Know what's now buildable</span><span>⚡ Generate a live tool</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">You can already build custom assistants. The next leap: these tools now write <em>working software</em> — a self-marking quiz, a random-name picker, a revision flashcard app — from a plain-English description. No computer science degree, and often no setup.</p>
+    <p>This module is the map. You'll learn the three rungs from "a thing in the chat" to "a link my whole department uses", and build something live in two minutes.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>Three rungs of "building"</h2>
+    <p>Each rung is more capable and more effort. Match the rung to the need — most classroom tools only need rung 1 or 2.</p>
+    <div class="ladder">
+      <div class="rung"><div class="lvl">1</div><div><span class="eff">Zero setup</span><h3>Artefact / canvas</h3><p>The AI generates a single interactive thing that runs <em>right there</em> in the chat — a calculator, a quiz widget, a sorting game. Describe it, use it, refine it. Nothing to install.</p></div></div>
+      <div class="rung"><div class="lvl">2</div><div><span class="eff">A file on your machine</span><h3>Local app</h3><p>The AI gives you a self-contained file (often a single <code>.html</code>) you save and open in a browser. Yours to keep, tweak and reuse offline.</p></div></div>
+      <div class="rung"><div class="lvl">3</div><div><span class="eff">Hosted on the web</span><h3>Deployed app</h3><p>Put that file online (Netlify, Vercel, GitHub Pages) so anyone with the link can use it. Powerful — and where the data-safety stakes rise sharply.</p></div></div>
+    </div>
+    <div class="note"><strong>The judgement call:</strong> don't deploy when an artefact will do. A revision game for your class needs rung 1; only reach for rung 3 when others genuinely need access via a link — and only after the safety checks in B4.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>A working quiz, generated live</h2>
+    <p>Paste a prompt like this into a tool that supports artefacts/canvas and you get a <em>functioning</em> tool, not a description of one:</p>
+    <div class="prompt"><span class="lbl">Copy &amp; run in an artefact/canvas</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Build me a self-contained interactive web page: a 10-question multiple-choice quiz on the water cycle for Year 5. Show one question at a time, give instant feedback, keep a running score, and a "restart" button. Make it colourful and child-friendly. Single HTML file, no external libraries.</span></div>
+    <button class="toggle-btn" onclick="toggleReveal('what')">What you get back ↓</button>
+    <div class="reveal" id="what"><div class="note" style="margin-top:6px">A live, clickable quiz beside the chat — pupils could use it immediately. Then you iterate in plain English: "add a timer", "make the wrong answers shake", "add five harder questions". You're directing software without writing a line of it. <strong>That's rung 1, and it's enough for a huge amount of classroom use.</strong></div></div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Build one live tool</h2>
+    <p>Five minutes. Generate a small interactive tool as an artefact/canvas, then refine it twice in plain English.</p>
+    <div class="prompt"><span class="lbl">A starter — adapt the subject</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Build a single-file interactive web tool: a random name picker for classroom use. Let me paste a list of names, then pick one at random with a fun animation, and an option to "remove after picking". Clean, large text, no external libraries.</span></div>
+    <h3 style="margin-top:18px">Where to generate runnable things</h3>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(event,'b_cla')">Claude</button>
+      <button class="tab" onclick="showTab(event,'b_gpt')">ChatGPT</button>
+      <button class="tab" onclick="showTab(event,'b_gem')">Gemini</button>
+      <button class="tab" onclick="showTab(event,'b_cop')">Copilot</button>
+    </div>
+    <div class="tabpanel active" id="b_cla"><ul><li><strong>Artifacts</strong> are Claude's strength here — interactive HTML/JS tools render live and are easy to iterate on. The best starting point for rung 1.</li></ul></div>
+    <div class="tabpanel" id="b_gpt"><ul><li><strong>Canvas</strong> can produce and preview code; ask for a single self-contained HTML file you can also save locally (rung 2).</li></ul></div>
+    <div class="tabpanel" id="b_gem"><ul><li><strong>Canvas</strong> generates and previews web apps; download the file to keep it.</li></ul></div>
+    <div class="tabpanel" id="b_cop"><ul><li>Copilot can write the code; for a live interactive preview you'll typically use one of the others, or run the file locally. Stays the approved tool if any real data is ever involved.</li></ul></div>
+    <div class="docs"><div class="hd">📚 Go deeper (official docs)</div>Claude Artifacts &amp; Canvas help centres, and each tool's "build an app / canvas" docs. As a Builder, lean on the official docs — they're more current than any course.</div>
+    <div class="current"><div class="hd">Current as of June 2026</div>Which tools render live apps, and how, changes often. The durable idea — <em>artefact → local file → deployed</em> — won't.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint</span>
+    <h2>The higher the rung, the higher the stakes</h2>
+    <ul class="clean">
+      <li><strong>Keep tools client-side and data-free.</strong> A quiz or picker should hold no personal data and save nothing to a server. Build them so the content lives in the file, not a database of pupils.</li>
+      <li><strong>Don't paste real pupil data into the build prompt</strong> — use generic examples; let teachers type their own (local) lists at point of use.</li>
+      <li><strong>Deploying (rung 3) makes it public.</strong> Anyone with the link can see it, and you may be processing data the moment a user types something in. Nothing pupil-facing or data-handling goes live without the B4 checks and IT/DPO sign-off.</li>
+    </ul>
+    <p style="margin-bottom:0">Rules of thumb: prototype at rung 1, and treat every step toward "hosted" as a step that needs a data conversation.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can describe the three rungs — artefact, local app, deployed app.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I generated a working interactive tool and refined it in plain English.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can judge which rung a given need actually requires.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know deploying raises data stakes and needs the B4 checks first.</div></div>
+    <h3 style="margin-top:20px">Confidence with building?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> replace one thing you'd normally make in PowerPoint with a quick interactive artefact.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>Artefacts are the gentle entry. Next, the real power tool: an agentic coder that works in your files and builds bigger things by conversation — "vibe coding".</p>
+    <p style="margin-top:10px"><strong>Up next → Builder · B2: Claude Code &amp; vibe-coding a tool</strong></p>
+    <div style="margin-top:22px">
+      <a href="builder-vibe-coding-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B1')<0){d.push('B1');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('B1')<0){d.push('B1');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function showTab(e,id){var tabs=e.currentTarget.parentElement.querySelectorAll('.tab');tabs.forEach(function(t){t.classList.remove('active')});e.currentTarget.classList.add('active');document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('active')});document.getElementById(id).classList.add('active');}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practitioner · Build a Custom Assistant — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;--plum:#6d4a86;--plum-tint:#efe7f5;
+    --name:#2563a8;--name-bg:#e6eef8;--inst:#0d6e63;--inst-bg:#e1efed;
+    --know:#b4532a;--know-bg:#f6e7de;--beh:#7a4ca0;--beh-bg:#efe6f6;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--teal-deep)}
+  header{background:linear-gradient(155deg,#5a3d76 0%,#3f2a55 100%);color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(243,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--plum);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--plum-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--plum)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--plum);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--plum);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
+  .toggle-btn{background:var(--plum);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:#553a6e}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .frame{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 4px}
+  .frame .f{border-radius:12px;padding:14px 15px;border:1px solid var(--line)}
+  .frame .f h3{font-family:inherit;font-size:.95rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 4px}
+  .frame .f p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+  .f.name{background:var(--name-bg);border-color:#cfdcf0}.f.name h3{color:var(--name)}
+  .f.inst{background:var(--inst-bg);border-color:#cfe3e0}.f.inst h3{color:var(--inst)}
+  .f.know{background:var(--know-bg);border-color:#ecd3c5}.f.know h3{color:var(--know)}
+  .f.beh{background:var(--beh-bg);border-color:#ddccec}.f.beh h3{color:var(--beh)}
+  @media(max-width:560px){.frame{grid-template-columns:1fr}}
+  .hl{border-radius:4px;padding:1px 3px;font-weight:500}
+  .hl.name{background:var(--name-bg);box-shadow:inset 0 -2px 0 var(--name)}
+  .hl.inst{background:var(--inst-bg);box-shadow:inset 0 -2px 0 var(--inst)}
+  .hl.know{background:var(--know-bg);box-shadow:inset 0 -2px 0 var(--know)}
+  .hl.beh{background:var(--beh-bg);box-shadow:inset 0 -2px 0 var(--beh)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 2px;font-size:.82rem}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .dot.name{background:var(--name)}.dot.inst{background:var(--inst)}.dot.know{background:var(--know)}.dot.beh{background:var(--beh)}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+  .tab{border:1px solid var(--line);background:#fbfaf6;color:var(--ink-soft);padding:8px 14px;border-radius:9px 9px 0 0;font-size:.88rem;font-weight:600;cursor:pointer}
+  .tab.active{background:var(--card);color:var(--plum);border-bottom-color:var(--card);border-top:2px solid var(--plum)}
+  .tabpanel{display:none;border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:15px 16px;background:var(--card)}
+  .tabpanel.active{display:block}.tabpanel ul{margin:.3rem 0;padding-left:1.1rem}.tabpanel li{margin:.25rem 0;font-size:.93rem}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .swap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .swap div{border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .swap .no{background:#fbeae6;border:1px solid #eac6bb}.swap .yes{background:#fff;border:1px solid #bfe0cb}
+  .swap .tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .swap .no .tag{color:var(--clay)}.swap .yes .tag{color:var(--safe)}
+  @media(max-width:560px){.swap{grid-template-columns:1fr}}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--plum)}.check-item.done{background:var(--plum-tint);border-color:var(--plum)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--plum);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--plum)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--plum)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#5a3d76,#3f2a55);color:#f3efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Practitioner · P5</span><span class="badge">All four tools</span></div>
+    <h1>Build your own custom assistant</h1>
+    <div class="meta"><span>⏱ About 18 minutes</span><span>🎯 Stop re-typing your best prompts</span><span>🛠️ Build one assistant</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">Back in Foundations you wrote a cracking prompt — and then, this week, you typed something very similar all over again. A <strong>custom assistant</strong> fixes that: you save your instructions once, give it a name, and from then on it's one click. A "Differentiator", a "Parents' Email Drafter", a "Prompt Polisher" — your own little team.</p>
+    <p>This is the moment AI stops being something you visit and becomes something you've <em>built around your job</em>. And you don't write any code.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>An assistant is just saved instructions (+ optional knowledge)</h2>
+    <p>Every tool offers the same thing under a different name — a reusable assistant you set up once. Four parts to define:</p>
+    <div class="frame">
+      <div class="f name"><h3>Name &amp; purpose</h3><p>What it's called and the one job it does. "Differentiator — adapts texts to three levels."</p></div>
+      <div class="f inst"><h3>Instructions</h3><p>The standing prompt: the role it plays and exactly how it should respond, every time.</p></div>
+      <div class="f know"><h3>Knowledge (optional)</h3><p>Reference files it can draw on — a marking policy, a writing-style guide. <em>Generic documents only.</em></p></div>
+      <div class="f beh"><h3>Behaviour rules</h3><p>How it interacts: ask clarifying questions first, always use British English, keep a warm tone.</p></div>
+    </div>
+    <div class="note"><strong>The names per tool:</strong> a <strong>Custom GPT</strong> (ChatGPT), a <strong>Gem</strong> (Gemini), a <strong>Project</strong> (Claude), or an <strong>agent</strong> (Copilot). Same idea — saved instructions you reuse and can often share with colleagues.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>Turn the F4 "prompt improver" into a saved assistant</h2>
+    <p>Remember the magic instruction from the prompting module? Instead of pasting it every time, bake it into an assistant. Here are the instructions you'd save, annotated:</p>
+    <button class="toggle-btn" onclick="toggleReveal('master')">See the assistant's instructions ↓</button>
+    <div class="reveal" id="master">
+      <div class="prompt"><span class="lbl">"Prompt Polisher" — set-up instructions (annotated)</span>
+        <span class="hl name">You are Prompt Polisher, a helper for teachers who want better prompts.</span>
+        <span class="hl inst">When I give you a rough request, rewrite it as a detailed, high-quality prompt: add the role the AI should play, the context it needs, sensible constraints, and the output format.</span>
+        <span class="hl beh">Always ask me for anything important that's missing before finalising. Use British English and a warm, plain tone. Never include real pupil or staff names — if I paste any, replace them with "Pupil A" and remind me.</span>
+      </div>
+      <div class="legend"><span><i class="dot name"></i> Name &amp; purpose</span><span><i class="dot inst"></i> Instructions</span><span><i class="dot beh"></i> Behaviour rules</span></div>
+      <div class="note" style="margin-top:14px"><strong>That's it — no knowledge files needed for this one.</strong> Save it, and forever after you just open Prompt Polisher and type your rough idea. Notice the behaviour rule even bakes the data-safety habit <em>into</em> the assistant.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn</span>
+    <h2>Build one assistant for a job you do weekly</h2>
+    <p>Ten minutes. Pick a repeated task and build an assistant for it. A ready-to-use starter you can paste into the set-up box:</p>
+    <div class="prompt"><span class="lbl">"Differentiator" starter — copy &amp; adapt</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">You are Differentiator, a helper for teachers. When I paste a text or task, produce three versions — below, at, and above expected for the year group I name — keeping the same key content and a consistent format. Always ask which year group if I forget. Use British English. Never include real pupil names; if I paste any, replace them with "Pupil A" and remind me. Keep reading levels appropriate and flag any vocabulary that may need pre-teaching.</span></div>
+    <h3 style="margin-top:18px">Where to build one — in your tool</h3>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(event,'a_cop')">Copilot</button>
+      <button class="tab" onclick="showTab(event,'a_cla')">Claude</button>
+      <button class="tab" onclick="showTab(event,'a_gpt')">ChatGPT</button>
+      <button class="tab" onclick="showTab(event,'a_gem')">Gemini</button>
+    </div>
+    <div class="tabpanel active" id="a_cop"><ul><li>In Copilot this is an <strong>agent</strong>. Simple declarative agents can be made in Copilot, but agents that ground on school SharePoint/Graph data need <strong>Copilot Studio</strong>, which IT must enable (it's metered, off by default).</li><li><strong>Check with IT first</strong> if you want a data-connected agent — and it stays the approved tool for real data.</li></ul></div>
+    <div class="tabpanel" id="a_cla"><ul><li>In Claude this is a <strong>Project</strong>: set shared instructions and optionally add knowledge files. Great for a writing-assistant or planning helper.</li></ul></div>
+    <div class="tabpanel" id="a_gpt"><ul><li>In ChatGPT this is a <strong>Custom GPT</strong> — there's a guided builder; paste your instructions and (optionally) upload generic reference files. Can be shared via a link.</li></ul></div>
+    <div class="tabpanel" id="a_gem"><ul><li>In Gemini this is a <strong>Gem</strong>: name it, paste instructions, optionally add knowledge. <strong>Heads-up:</strong> uploaded files in a Gem can expire after about 48 hours — don't rely on them as permanent storage; re-add or keep the source elsewhere.</li></ul></div>
+    <div class="current"><div class="hd">Current as of June 2026</div>Builders and sharing options change regularly, and Copilot agent-building in particular depends on your school's licensing. The four-part recipe — name, instructions, optional knowledge, behaviour rules — is what stays the same.</div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">5</span> <span class="shield">🛡️</span> Data-safety checkpoint — assistants remember</span>
+    <h2>Don't feed it your class data</h2>
+    <p>A custom assistant's biggest risk is its <strong>knowledge base</strong>. Anything you load in, it keeps — and anyone you share the assistant with can pull it back out.</p>
+    <ul class="clean">
+      <li><strong>Never upload class lists, mark books, reports, SEND records or anything identifying pupils</strong> into an assistant's knowledge. Load only <em>generic</em> documents — a public scheme of work, a style guide, a generic policy.</li>
+      <li><strong>Sharing spreads the data.</strong> Before you share an assistant with colleagues, check its instructions and knowledge contain nothing personal.</li>
+      <li><strong>Bake safety into the instructions</strong> — as our examples do ("never include real pupil names; replace with Pupil A").</li>
+    </ul>
+    <div class="swap">
+      <div class="no"><span class="tag">✗ Don't</span>Upload "Year 9 Set 2 — names, grades, SEND notes.xlsx" as the Gem's knowledge.</div>
+      <div class="yes"><span class="tag">✓ Do</span>Upload the generic, public scheme of work; paste anonymised examples only.</div>
+    </div>
+    <p style="margin-bottom:0">For any assistant that genuinely needs school data, that's a Copilot/IT conversation (green shield, EDP) — not a personal-account build.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <h2>Is your assistant well-built?</h2>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt"><strong>Name &amp; purpose</strong> — one clear job, clearly named?</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt"><strong>Instructions</strong> — does it know the role and exactly how to respond every time?</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt"><strong>Behaviour rules</strong> — clarifying questions, British English, tone set?</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">No real pupil/staff data in the instructions or knowledge.</div></div>
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me a strong example ↓</button>
+    <div class="reveal" id="exemplar"><div class="prompt" style="margin-top:6px"><span class="lbl">Strong assistant — "Parents' Email Drafter"</span><span class="hl name">You are Parents' Email Drafter.</span> <span class="hl inst">When I give you rough bullet points, write a warm, professional email home: a friendly opening, the key information clearly, and a positive close.</span> <span class="hl beh">Ask who the email is to and the tone (celebratory / informative / sensitive) if unclear. British English. Never include real pupil names — use "your child" or "Pupil A".</span></div></div>
+    <h3 style="margin-top:20px">How confident are you building assistants?</h3>
+    <div class="lights"><div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div><div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div><div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div></div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> build one assistant for your most-repeated task, use it three times, and share it with a colleague (after the safety check).</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">🎓</span>
+    <h2>That's Practitioner complete</h2>
+    <p>You can choose your gear, switch modes, generate images and video, and build your own assistants. You're using AI like a pro. Ready to make things that didn't exist before?</p>
+    <p style="margin-top:10px"><strong>Next pathway → Builder · B1: From chat to artefact to app</strong></p>
+    <div style="margin-top:22px">
+      <a href="builder-chat-to-app-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P5')<0){d.push('P5');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; start Builder →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P5')<0){d.push('P5');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function showTab(e,id){var tabs=e.currentTarget.parentElement.querySelectorAll('.tab');tabs.forEach(function(t){t.classList.remove('active')});e.currentTarget.classList.add('active');document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('active')});document.getElementById(id).classList.add('active');}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>

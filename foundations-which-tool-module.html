@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations · Which Tool Should I Use — Staff AI Programme</title>
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;--clay:#b4532a;--amber:#e8b04b;
+    --safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--teal-deep)}
+  header{background:linear-gradient(155deg,#0d6e63 0%,#0a544c 100%);color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(243,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--teal-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--teal-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--teal-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .toggle-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--teal-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* tool cards */
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .toolc{border:1px solid var(--line);border-radius:13px;padding:15px 16px;background:#fbfaf6}
+  .toolc h3{margin:0 0 2px;display:flex;align-items:center;gap:8px}
+  .toolc .by{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+  .toolc p{font-size:.9rem;margin:.45rem 0 0}
+  .toolc.approved{border:2px solid var(--safe);background:var(--safe-tint)}
+  .toolc .star{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--safe);background:#fff;border:1px solid #bfe0cb;border-radius:999px;padding:2px 9px;margin-left:auto}
+  @media(max-width:560px){.tools{grid-template-columns:1fr}}
+  /* concept map table */
+  .cmap{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem}
+  .cmap th,.cmap td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+  .cmap th{background:var(--teal-tint);color:var(--teal-deep);font-family:Georgia,serif;font-weight:600}
+  .cmap td:first-child{font-weight:600;background:#fbfaf6}
+  .cmap-wrap{overflow-x:auto}
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}
+  .shield{font-size:1.15rem}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
+  .steps li{counter-increment:s;position:relative;padding:10px 0 10px 42px;border-bottom:1px solid var(--line);font-size:.95rem}
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:9px;width:26px;height:26px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.85rem}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--teal)}.check-item.done{background:var(--teal-tint);border-color:var(--teal)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--teal)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--teal-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .next{background:linear-gradient(155deg,#0d6e63,#0a544c);color:#f3efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="programme">Staff AI Programme</p>
+    <div class="badges"><span class="badge path">Foundations · F3</span><span class="badge">Tool-agnostic</span></div>
+    <h1>Which tool should I use?</h1>
+    <div class="meta"><span>⏱ About 14 minutes</span><span>🎯 Claude · ChatGPT · Gemini · Copilot</span><span>🟢 Find your green shield</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">Four big names — Claude, ChatGPT, Google Gemini, Microsoft Copilot — and a nagging worry that you'll pick the "wrong" one. Good news: for everyday school work they're far more alike than different, and the choice that actually matters isn't about features at all.</p>
+    <p>By the end you'll know what each one is, the one distinction that <em>does</em> matter in a school, and exactly which tool to open for school work — plus how to confirm it's protecting your data.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>They're four cars, not four planets</h2>
+    <p>All four are AI chat assistants: you type, they respond, you refine. They each also offer the same <em>kinds</em> of extra features — a way to save a reusable custom assistant, a document canvas, a research mode, image generation. <strong>Only the names differ.</strong> Learn the idea once and you can drive any of them.</p>
+    <div class="tools">
+      <div class="toolc"><h3>Claude</h3><span class="by">Anthropic</span><p>Especially strong at writing, reasoning and careful document work. Thoughtful, measured tone.</p></div>
+      <div class="toolc"><h3>ChatGPT</h3><span class="by">OpenAI</span><p>The all-rounder most people have heard of. Strong built-in image generation.</p></div>
+      <div class="toolc"><h3>Gemini</h3><span class="by">Google</span><p>Sits neatly alongside Google Docs, Slides and Gmail if you live in Workspace.</p></div>
+      <div class="toolc approved"><h3>Copilot <span class="star">★ School-approved</span></h3><span class="by">Microsoft</span><p>Built into Word, Teams and Outlook. With your school login it has <strong>enterprise data protection</strong> — so it's our tool for real school work.</p></div>
+    </div>
+    <div class="note"><strong>The distinction that matters:</strong> not "which is cleverest" but "which has a data agreement with our school". For us that's <strong>Copilot</strong>. The other three are fine for personal use and generic, no-data tasks — but real school data goes in Copilot.</div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>Same idea, four names</h2>
+    <p>Once you know a feature exists, you can find it in any tool. Here's the same concept across all four — the durable map behind the marketing names:</p>
+    <div class="cmap-wrap">
+    <table class="cmap">
+      <tr><th>What it does</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th><th>Copilot</th></tr>
+      <tr><td>Reusable custom assistant</td><td>Projects</td><td>Custom GPTs</td><td>Gems</td><td>Agents</td></tr>
+      <tr><td>Document / canvas surface</td><td>Artifacts</td><td>Canvas</td><td>Canvas</td><td>Pages</td></tr>
+      <tr><td>Deep research mode</td><td>Research</td><td>Deep Research</td><td>Deep Research</td><td>Research</td></tr>
+      <tr><td>Make an image</td><td>—*</td><td>Built-in</td><td>Built-in</td><td>Designer</td></tr>
+    </table>
+    </div>
+    <p style="font-size:.84rem;color:var(--ink-soft)">*Claude focuses on text rather than image generation. You'll meet all of these properly in the Practitioner pathway — for now, just notice they're the <em>same six ideas</em> wearing different badges.</p>
+    <div class="current">
+      <div class="hd">Current as of June 2026</div>
+      Feature names and menus change often — this table is the volatile bit. The durable point ("every tool has a custom-assistant, a canvas, a research mode") stays true even when a label changes.
+    </div>
+  </section>
+
+  <section class="safety">
+    <span class="kicker"><span class="num">4</span> <span class="shield">🛡️</span> Data-safety checkpoint</span>
+    <h2>One tool for school data — and how to check it's on</h2>
+    <p>The four tools are <em>not</em> equal when it comes to your pupils' data. The safe-for-school-data version is the one the school has a data agreement for:</p>
+    <p><strong>For us that's Microsoft 365 Copilot Chat</strong>, used <strong>signed in with your school account</strong>. When you are, prompts and responses stay inside the school's protected Microsoft boundary and aren't used to train the model. You'll see a <strong style="color:var(--safe)">green shield</strong> in the corner confirming enterprise data protection is on. <strong>No green shield, or a personal login, = treat it as green-data-only.</strong></p>
+    <p style="margin-bottom:0">Personal Claude, ChatGPT or Gemini accounts have <em>no</em> agreement with the school — perfectly fine for generic tasks with no real data, never for anything identifying a pupil or colleague.</p>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">5</span> Your turn</span>
+    <h2>Find your green shield</h2>
+    <p>Three minutes to set yourself up properly for everything that follows:</p>
+    <ol class="steps">
+      <li>Open <strong>Microsoft 365 Copilot Chat</strong> — the Copilot icon in Teams or Edge, or copilot.microsoft.com.</li>
+      <li>Make sure you're <strong>signed in with your school account</strong> (not a personal Microsoft account).</li>
+      <li>Look for the <strong>green shield / "enterprise data protection"</strong> indicator. That's your confirmation you're protected.</li>
+      <li>Run a simple prompt to get comfortable — copy the one below.</li>
+    </ol>
+    <div class="prompt"><span class="lbl">A friendly first prompt</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">I'm a teacher trying you out. In plain English, give me three quick ways you could save me time this week, with a one-line example of each.</span></div>
+  </section>
+
+  <section>
+    <span class="kicker"><span class="num">6</span> Self-check</span>
+    <h2>Do you know your way around?</h2>
+    <p class="progress"><b id="pcount">0</b> of 4 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can name the four tools and who makes each.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I understand they share the same <em>kinds</em> of features under different names.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know which tool to use for real school work, and why.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I've signed into Copilot with my school account and found the green shield.</div></div>
+
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me the one-line summary ↓</button>
+    <div class="reveal" id="exemplar">
+      <div class="note" style="margin-top:6px">"They're four versions of the same idea. I can use any of them for generic tasks, but anything with real pupil or staff data goes into <strong>Microsoft 365 Copilot Chat</strong>, signed in with my school account, with the <strong>green shield</strong> showing."</div>
+    </div>
+
+    <h3 style="margin-top:20px">How confident are you choosing a tool?</h3>
+    <div class="lights">
+      <div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div>
+      <div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div>
+      <div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div>
+    </div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> bookmark Copilot Chat where you'll actually see it, and make it your default for any school task.</div>
+  </section>
+
+  <section class="next">
+    <span class="arrow">↓</span>
+    <h2>Where next</h2>
+    <p>You know what AI is, what it's safely for, and which tool to open. The final Foundations step is the skill that makes all the rest work: asking well.</p>
+    <p style="margin-top:10px"><strong>Up next → Foundations · F4: Prompting basics</strong></p>
+    <div style="margin-top:22px">
+      <a href="foundations-prompting-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F3')<0){d.push('F3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F3')<0){d.push('F3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+</script>
+</body>
+</html>
