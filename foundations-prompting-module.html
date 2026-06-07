@@ -390,8 +390,8 @@
     <p>You can now turn a vague request into a prompt that works first time — and you already know what AI is, what it's safely for, and which tool to open. You're ready to start getting genuinely good.</p>
     <p style="margin-top:10px"><strong>Next pathway → Practitioner · P1: Choosing your model &amp; thinking level</strong></p>
     <div style="margin-top:22px">
-      <a href="practitioner-model-thinking-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F4')<0){d.push('F4');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; start Practitioner →</a>
-      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F4')<0){d.push('F4');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+      <a href="practitioner-model-thinking-module.html" data-done="F4" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; start Practitioner →</a>
+      <div style="margin-top:13px"><a href="index.html" data-done="F4" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
     </div>
   </section>
 
@@ -434,6 +434,7 @@
     el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});
     el.classList.add('sel');
   }
+  (function(){document.querySelectorAll('a[data-done]').forEach(function(a){a.addEventListener('click',function(){try{var id=a.getAttribute('data-done');var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf(id)<0){d.push(id);localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}});});})();
 </script>
 </body>
 </html>

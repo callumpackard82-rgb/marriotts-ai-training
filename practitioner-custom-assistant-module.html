@@ -196,8 +196,8 @@
     <p>You can choose your gear, switch modes, generate images and video, and build your own assistants. You're using AI like a pro. Ready to make things that didn't exist before?</p>
     <p style="margin-top:10px"><strong>Next pathway → Builder · B1: From chat to artefact to app</strong></p>
     <div style="margin-top:22px">
-      <a href="builder-chat-to-app-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P5')<0){d.push('P5');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; start Builder →</a>
-      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('P5')<0){d.push('P5');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+      <a href="builder-chat-to-app-module.html" data-done="P5" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; start Builder →</a>
+      <div style="margin-top:13px"><a href="index.html" data-done="P5" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
     </div>
   </section>
 
@@ -211,6 +211,7 @@
   function showTab(e,id){var tabs=e.currentTarget.parentElement.querySelectorAll('.tab');tabs.forEach(function(t){t.classList.remove('active')});e.currentTarget.classList.add('active');document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('active')});document.getElementById(id).classList.add('active');}
   function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
   function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+  (function(){document.querySelectorAll('a[data-done]').forEach(function(a){a.addEventListener('click',function(){try{var id=a.getAttribute('data-done');var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf(id)<0){d.push(id);localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}});});})();
 </script>
 </body>
 </html>

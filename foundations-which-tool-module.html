@@ -183,8 +183,8 @@
     <p>You know what AI is, what it's safely for, and which tool to open. The final Foundations step is the skill that makes all the rest work: asking well.</p>
     <p style="margin-top:10px"><strong>Up next → Foundations · F4: Prompting basics</strong></p>
     <div style="margin-top:22px">
-      <a href="foundations-prompting-module.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F3')<0){d.push('F3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
-      <div style="margin-top:13px"><a href="index.html" onclick="try{var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf('F3')<0){d.push('F3');localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
+      <a href="foundations-prompting-module.html" data-done="F3" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; continue →</a>
+      <div style="margin-top:13px"><a href="index.html" data-done="F3" style="color:rgba(255,255,255,.82);font-size:.9rem">Save &amp; back to dashboard</a></div>
     </div>
   </section>
 
@@ -197,6 +197,7 @@
   function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
   function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
   function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+  (function(){document.querySelectorAll('a[data-done]').forEach(function(a){a.addEventListener('click',function(){try{var id=a.getAttribute('data-done');var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf(id)<0){d.push(id);localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}});});})();
 </script>
 </body>
 </html>
