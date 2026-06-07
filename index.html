@@ -311,6 +311,11 @@
   // Re-render whenever the page is shown — including when returning via the browser
   // Back button (the back-forward cache), so completed modules are always up to date.
   window.addEventListener("pageshow", function(){ render(); renderTool(); });
+  // Also refresh when this tab regains focus, becomes visible again, or another tab
+  // updates progress — so an already-open dashboard never shows stale numbers.
+  window.addEventListener("focus", function(){ render(); renderTool(); });
+  window.addEventListener("storage", function(){ render(); renderTool(); });
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden){ render(); renderTool(); } });
 
   // If the browser is blocking saved data (e.g. a private/incognito window), say so plainly.
   if(!storageWorks()){
