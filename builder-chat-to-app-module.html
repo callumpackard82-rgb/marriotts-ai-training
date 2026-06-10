@@ -7,9 +7,9 @@
 <style>
   :root{
     --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
-    --teal:#0d6e63;--teal-deep:#0a544c;--clay:#b4532a;--amber:#e8b04b;
+    --teal:#d0452e;--teal-deep:#9e3320;--clay:#b4532a;--amber:#e8b04b;
     --safe:#1f7a4d;--safe-tint:#e8f3ec;
-    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --build:#565b5e;--build-deep:#3a3f42;--build-tint:#eceef0;
     --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
   }
   *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -19,7 +19,7 @@
   h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
   p{margin:.55rem 0}a{color:var(--build-deep)}
   code{background:#f0ece3;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;font-family:"SFMono-Regular",Consolas,monospace}
-  header{background:linear-gradient(155deg,#9a5b2d 0%,#5e3818 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  header{background:linear-gradient(155deg,#565b5e 0%,#34383b 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
   .header-inner{max-width:760px;margin:0 auto}
   .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
   .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
@@ -69,18 +69,19 @@
   .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
   .light.sel{border-width:2px;transform:translateY(-2px)}
   .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
-  .next{background:linear-gradient(155deg,#9a5b2d,#5e3818);color:#f6efe4;border:none;text-align:center}
+  .next{background:linear-gradient(155deg,#565b5e,#34383b);color:#f6efe4;border:none;text-align:center}
   .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
   .toast.show{transform:translateX(-50%) translateY(0)}
   ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
 </style>
+  <link rel="icon" href="logo.svg">
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <p class="programme">Staff AI Programme</p>
+    <div style="display:flex;align-items:center;gap:12px;margin:0 0 14px"><img src="logo.svg" alt="Marriotts School" width="42" height="42" style="background:#fff;border-radius:9px;padding:5px;box-sizing:border-box;flex:0 0 auto"><p class="programme" style="margin:0">Marriotts School &middot; Staff AI Programme</p></div>
     <div class="badges"><span class="badge path">Builder · B1</span><span class="badge">Mainly Claude / ChatGPT / Gemini</span></div>
     <h1>From chat to artefact to app</h1>
     <div class="meta"><span>⏱ About 15 minutes</span><span>🎯 Know what's now buildable</span><span>⚡ Generate a live tool</span></div>

@@ -7,9 +7,9 @@
 <style>
   :root{
     --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
-    --teal:#0d6e63;--teal-deep:#0a544c;--teal-tint:#e7f1ef;
-    --plum:#6d4a86;--plum-deep:#553a6e;--plum-tint:#efe7f5;
-    --build:#9a5b2d;--build-deep:#6f4019;--build-tint:#f4e7d8;
+    --teal:#d0452e;--teal-deep:#9e3320;--teal-tint:#fbe9e4;
+    --plum:#3f6e72;--plum-deep:#294b4e;--plum-tint:#e6eef0;
+    --build:#565b5e;--build-deep:#3a3f42;--build-tint:#eceef0;
     --amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
     --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
   }
@@ -19,7 +19,7 @@
   h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.18;letter-spacing:-.01em}
   a{color:var(--teal-deep)}
   /* hero */
-  header{background:linear-gradient(150deg,#0d6e63 0%,#0a544c 55%,#08443e 100%);color:#f3efe4;padding:54px 22px 48px;border-bottom:4px solid var(--amber);position:relative;overflow:hidden}
+  header{background:linear-gradient(150deg,#d0452e 0%,#9e3320 55%,#7d2718 100%);color:#f3efe4;padding:54px 22px 48px;border-bottom:4px solid var(--amber);position:relative;overflow:hidden}
   header::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(232,176,75,.12)}
   .header-inner{max-width:880px;margin:0 auto;position:relative}
   .programme{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin:0 0 14px}
@@ -28,7 +28,7 @@
   /* overall progress in hero */
   .overall{display:flex;align-items:center;gap:18px;margin-top:26px;background:rgba(255,255,255,.1);border:1px solid rgba(243,239,228,.25);border-radius:14px;padding:16px 20px;max-width:430px}
   .ring{--p:0;flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--amber) calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center}
-  .ring .inner{width:50px;height:50px;border-radius:50%;background:#0a544c;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600;font-size:1.05rem;color:#fff}
+  .ring .inner{width:50px;height:50px;border-radius:50%;background:#9e3320;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600;font-size:1.05rem;color:#fff}
   .overall .lbl{font-size:.92rem;opacity:.92}
   .overall .lbl b{display:block;font-size:1.05rem;font-family:Georgia,serif;margin-bottom:1px}
   /* sections */
@@ -68,9 +68,9 @@
   .pw-head .bar{height:7px;border-radius:99px;background:rgba(255,255,255,.25);margin-top:16px;overflow:hidden;max-width:340px}
   .pw-head .bar span{display:block;height:100%;background:var(--amber);width:0;transition:width .5s ease}
   .pw-head .barlbl{font-size:.8rem;opacity:.9;margin-top:6px;font-weight:600}
-  .pw-foundations .pw-head{background:linear-gradient(150deg,#0d6e63,#0a544c)}
-  .pw-practitioner .pw-head{background:linear-gradient(150deg,#6d4a86,#3f2a55)}
-  .pw-builder .pw-head{background:linear-gradient(150deg,#9a5b2d,#5e3818)}
+  .pw-foundations .pw-head{background:linear-gradient(150deg,#d0452e,#9e3320)}
+  .pw-practitioner .pw-head{background:linear-gradient(150deg,#3f6e72,#294b4e)}
+  .pw-builder .pw-head{background:linear-gradient(150deg,#565b5e,#34383b)}
   .pw-body{background:var(--card);padding:14px 16px}
   /* module card */
   .mod{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:12px;transition:.15s;border:1px solid transparent}
@@ -99,12 +99,13 @@
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
   .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
+  <link rel="icon" href="logo.svg">
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <p class="programme">Staff AI Programme</p>
+    <div style="display:flex;align-items:center;gap:12px;margin:0 0 14px"><img src="logo.svg" alt="Marriotts School" width="42" height="42" style="background:#fff;border-radius:9px;padding:5px;box-sizing:border-box;flex:0 0 auto"><p class="programme" style="margin:0">Marriotts School &middot; Staff AI Programme</p></div>
     <h1>Use AI well. Stay in control.</h1>
     <p class="sub">A self-paced path from curious beginner to confident builder — pick your level, pick your tool, and learn what's useful for your role.</p>
     <div class="overall">
@@ -179,14 +180,14 @@
 <script>
   // ---- Module data ----
   var PATHWAYS = [
-    { key:"foundations", tag:"Pathway 1 · Teal", title:"Foundations", blurb:"For the curious and the sceptical. What AI is, what it's safely for, and how to ask it well.",
+    { key:"foundations", tag:"Pathway 1 · Start here", title:"Foundations", blurb:"For the curious and the sceptical. What AI is, what it's safely for, and how to ask it well.",
       modules:[
         {id:"F1", t:"What is generative AI?", time:"12 min", f:"foundations-what-is-ai-module.html"},
         {id:"F2", t:"What can I safely use it for?", time:"15 min", f:"foundations-safe-uses-module.html"},
         {id:"F3", t:"Which tool should I use?", time:"14 min", f:"foundations-which-tool-module.html"},
         {id:"F4", t:"Prompting basics", time:"15 min", f:"foundations-prompting-module.html"}
       ]},
-    { key:"practitioner", tag:"Pathway 2 · Plum", title:"Practitioner", blurb:"For confident users getting good. Models, modes, images, video and your own custom assistants.",
+    { key:"practitioner", tag:"Pathway 2 · Get good", title:"Practitioner", blurb:"For confident users getting good. Models, modes, images, video and your own custom assistants.",
       modules:[
         {id:"P1", t:"Choosing your model & thinking level", time:"14 min", f:"practitioner-model-thinking-module.html"},
         {id:"P2", t:"Beyond chat: the power modes", time:"16 min", f:"practitioner-power-modes-module.html"},
@@ -194,7 +195,7 @@
         {id:"P4", t:"Prompting for video", time:"15 min", f:"practitioner-video-module.html"},
         {id:"P5", t:"Build your own custom assistant", time:"18 min", f:"practitioner-custom-assistant-module.html"}
       ]},
-    { key:"builder", tag:"Pathway 3 · Copper", title:"Builder", blurb:"For those who want to make things. From live artefacts to vibe-coded tools you share responsibly.",
+    { key:"builder", tag:"Pathway 3 · Build things", title:"Builder", blurb:"For those who want to make things. From live artefacts to vibe-coded tools you share responsibly.",
       modules:[
         {id:"B1", t:"From chat to artefact to app", time:"15 min", f:"builder-chat-to-app-module.html"},
         {id:"B2", t:"Vibe-coding with Claude Code", time:"18 min", f:"builder-vibe-coding-module.html"},

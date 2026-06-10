@@ -11,9 +11,9 @@
     --ink:#1f2421;
     --ink-soft:#4a534d;
     --line:#e3ded2;
-    --teal:#0d6e63;
-    --teal-deep:#0a544c;
-    --teal-tint:#e7f1ef;
+    --teal:#d0452e;
+    --teal-deep:#9e3320;
+    --teal-tint:#fbe9e4;
     --clay:#b4532a;
     --amber:#e8b04b;
     --safe:#1f7a4d;
@@ -41,7 +41,7 @@
 
   /* Header */
   header{
-    background:linear-gradient(155deg,#0d6e63 0%,#0a544c 100%);
+    background:linear-gradient(155deg,#d0452e 0%,#9e3320 100%);
     color:#f3efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber);
   }
   .header-inner{max-width:760px;margin:0 auto}
@@ -181,7 +181,7 @@
   .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 
   .next{
-    background:linear-gradient(155deg,#0d6e63,#0a544c);color:#f3efe4;border:none;text-align:center;
+    background:linear-gradient(155deg,#d0452e,#9e3320);color:#f3efe4;border:none;text-align:center;
   }
   .next h2{color:#fff}.next p{opacity:.92}
   .next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
@@ -194,12 +194,13 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
   ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
 </style>
+  <link rel="icon" href="logo.svg">
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <p class="programme">Staff AI Programme</p>
+    <div style="display:flex;align-items:center;gap:12px;margin:0 0 14px"><img src="logo.svg" alt="Marriotts School" width="42" height="42" style="background:#fff;border-radius:9px;padding:5px;box-sizing:border-box;flex:0 0 auto"><p class="programme" style="margin:0">Marriotts School &middot; Staff AI Programme</p></div>
     <div class="badges">
       <span class="badge path">Foundations · F4</span>
       <span class="badge">Tool-agnostic</span>
