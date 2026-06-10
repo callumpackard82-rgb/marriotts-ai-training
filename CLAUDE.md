@@ -16,11 +16,19 @@ is a self-contained `.html` file with all CSS and JS inline. There is nothing to
 
 **Three pathways, 13 modules**, each a standalone interactive lesson following the same 8-section
 structure (hook → idea → worked example → hands-on task → data-safety checkpoint → self-check →
-where-next). Pathways are colour-coded by header gradient: **Foundations = teal**, **Practitioner =
-plum (`#6d4a86`)**, **Builder = copper (`#9a5b2d`)**. Module order:
+where-next). Pathways are colour-coded by header gradient — a **Marriotts-branded triad**:
+**Foundations = coral-red `#d0452e`**, **Practitioner = slate-teal `#3f6e72`**, **Builder = charcoal
+`#565b5e`** (each also has a `-deep` and `-tint` shade). Module order:
 F1 what-is-ai → F2 safe-uses → F3 which-tool → F4 prompting → P1 model-thinking → P2 power-modes →
 P3 images → P4 video → P5 custom-assistant → B1 chat-to-app → B2 vibe-coding → B3 agentic-landscape →
 B4 share-responsibly.
+
+**Branding.** Brand colours are coral `#d0452e` + grey `#73797c`, taken from the school's official
+`logo.svg` (repo root). The logo sits in every page header (white rounded tile + the eyebrow
+"Marriotts School · Staff AI Programme") and is the favicon (`<link rel="icon" href="logo.svg">`).
+New pages must include both. **Don't recolour the in-lesson illustrative legends** (F4's
+role/context/constraints/format prompt-part colours, the image SSCC legend, etc.) — those are
+separate CSS vars used for teaching, not pathway theming.
 
 **Progress tracking.** Modules are otherwise storage-free (in-memory JS only, no external calls), with
 **one exception**: each module's "Where next" section has save links that record completion. The
@@ -104,3 +112,12 @@ push) — e.g. `Invoke-WebRequest` the page and check the served HTML, since Net
   module: real school data only in Microsoft 365 Copilot Chat with the green shield).
 - Keep links between pages **relative**. Netlify also serves clean URLs (`/foundations-prompting-module`
   resolves to the `.html`).
+
+## Content conventions
+
+- This is a **secondary school** — keep all examples secondary-appropriate (KS3/KS4 year groups and
+  topics, "students" not "children"). Don't use primary-age examples.
+- Copilot here = **Microsoft 365 Copilot Chat** only (free with A3, enterprise data protection,
+  accessed via Teams/Edge/browser). The school does **not** have the paid in-app Copilot in
+  Word/Excel/PowerPoint — never describe it as "built into" the Office apps. (The generator skill's
+  tool-notes wrongly assume in-app embedding; ignore that for this deployment.)
