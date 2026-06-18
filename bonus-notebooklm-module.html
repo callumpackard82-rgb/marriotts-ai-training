@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus · Google NotebookLM — Staff AI Programme</title>
+<link rel="icon" href="logo.svg">
+<style>
+  :root{
+    --paper:#f7f5ef;--card:#ffffff;--ink:#1f2421;--ink-soft:#4a534d;--line:#e3ded2;
+    --clay:#b4532a;--amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
+    --gold:#9a6716;--gold-deep:#6f4a12;--gold-tint:#f6edda;
+    --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.22;letter-spacing:-.01em}
+  h2{font-size:1.5rem;margin:0 0 .5rem}h3{font-size:1.12rem;margin:0 0 .4rem}
+  p{margin:.55rem 0}a{color:var(--gold-deep)}
+  header{background:linear-gradient(155deg,#9a6716 0%,#6f4a12 100%);color:#f6efe4;padding:42px 22px 38px;border-bottom:4px solid var(--amber)}
+  .header-inner{max-width:760px;margin:0 auto}
+  .programme{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;margin:0 0 16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .badge{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid rgba(246,239,228,.35)}
+  .badge.path{background:var(--amber);color:#3a2a06;border-color:transparent}
+  header h1{font-size:2.05rem;margin:.1rem 0 .5rem;color:#fff}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem;opacity:.9;margin-top:14px}
+  .meta span{display:flex;align-items:center;gap:6px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .kicker .num{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.8rem}
+  .lead{font-size:1.06rem}
+  .note{background:var(--gold-tint);border-radius:10px;padding:12px 15px;font-size:.92rem;margin:14px 0}
+  .note strong{color:var(--gold-deep)}
+  .prompt{position:relative;background:#fbfaf6;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:15px 16px;margin:12px 0;font-size:.95rem}
+  .prompt .lbl{position:absolute;top:-10px;left:12px;background:var(--card);padding:0 8px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .copy{position:absolute;top:9px;right:9px;border:1px solid var(--line);background:#fff;color:var(--gold-deep);font-size:.72rem;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .toggle-btn{background:var(--gold);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600;cursor:pointer;margin:8px 0;transition:.15s}
+  .toggle-btn:hover{background:var(--gold-deep)}
+  .reveal{display:none}.reveal.show{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* three-panel tour */
+  .panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+  .panels .pnl{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfaf6;border-top:3px solid var(--gold)}
+  .panels .pnl h3{margin:0 0 3px;font-size:1rem}
+  .panels .pnl p{margin:0;font-size:.86rem;color:var(--ink-soft)}
+  .panels .pnl .em{font-size:1.3rem;display:block;margin-bottom:4px}
+  @media(max-width:620px){.panels{grid-template-columns:1fr}}
+  /* numbered steps */
+  .steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
+  .steps li{counter-increment:s;position:relative;padding:11px 0 11px 44px;border-bottom:1px solid var(--line);font-size:.95rem}
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:10px;width:28px;height:28px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.85rem}
+  /* studio grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+  .grid .g{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:#fbfaf6;font-size:.9rem}
+  .grid .g b{display:block;color:var(--gold-deep);margin-bottom:1px}
+  .grid .g .em{font-size:1.15rem;margin-right:5px}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  /* diff table */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+  .vs div{border-radius:11px;padding:13px 15px;font-size:.91rem}
+  .vs .a{background:var(--gold-tint);border:1px solid #e6d4a8}
+  .vs .b{background:#f1ede6;border:1px solid var(--line)}
+  .vs .t{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .vs .a .t{color:var(--gold-deep)}.vs .b .t{color:var(--ink-soft)}
+  @media(max-width:560px){.vs{grid-template-columns:1fr}}
+  /* data safety */
+  .safety{background:var(--safe-tint);border:1px solid #bfe0cb;border-left:5px solid var(--safe)}
+  .safety .kicker{color:var(--safe)}.safety .kicker .num{background:var(--safe)}.shield{font-size:1.15rem}
+  .swap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .swap div{border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .swap .no{background:#fbeae6;border:1px solid #eac6bb}.swap .yes{background:#fff;border:1px solid #bfe0cb}
+  .swap .tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .swap .no .tag{color:var(--clay)}.swap .yes .tag{color:var(--safe)}
+  @media(max-width:560px){.swap{grid-template-columns:1fr}}
+  .current{background:#fbf6ea;border:1px dashed #ddc488;border-radius:11px;padding:14px 16px;margin:18px 0;font-size:.88rem}
+  .current .hd{font-weight:700;color:#8a6516;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;transition:.15s;background:#fbfaf6}
+  .check-item:hover{border-color:var(--gold)}.check-item.done{background:var(--gold-tint);border-color:var(--gold)}
+  .check-item .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;font-weight:700;font-size:.9rem}
+  .check-item.done .box{background:var(--gold)}.check-item .txt{font-size:.95rem}
+  .progress{font-size:.9rem;color:var(--ink-soft);margin:6px 0 14px;font-weight:600}.progress b{color:var(--gold-deep)}
+  .lights{display:flex;gap:10px;margin:16px 0 4px}
+  .light{flex:1;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.15s;background:#fbfaf6}
+  .light .em{font-size:1.4rem;display:block;margin-bottom:3px}
+  .light.sel{border-width:2px;transform:translateY(-2px)}
+  .light.r.sel{border-color:#c0392b;background:#fbeae6}.light.y.sel{border-color:#d9a528;background:#fbf3df}.light.g.sel{border-color:var(--safe);background:var(--safe-tint)}
+  .next{background:linear-gradient(155deg,#9a6716,#6f4a12);color:#f6efe4;border:none;text-align:center}
+  .next h2{color:#fff}.next p{opacity:.92}.next .arrow{font-size:1.6rem;display:block;margin-bottom:6px;color:var(--amber)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  ul.clean{padding-left:1.15rem}ul.clean li{margin:.3rem 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:12px;margin:0 0 14px"><img src="logo.svg" alt="Marriotts School" width="42" height="42" style="background:#fff;border-radius:9px;padding:5px;box-sizing:border-box;flex:0 0 auto"><p class="programme" style="margin:0">Marriotts School &middot; Staff AI Programme</p></div>
+    <div class="badges"><span class="badge path">★ Bonus</span><span class="badge">Google NotebookLM</span></div>
+    <h1>NotebookLM: your sources, supercharged</h1>
+    <div class="meta"><span>⏱ About 20 minutes</span><span>🎯 Turn documents into answers, audio &amp; study tools</span><span>📚 One notebook, built by you</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 1 WHY -->
+  <section>
+    <span class="kicker"><span class="num">1</span> Why this matters</span>
+    <p class="lead">You're surrounded by documents — schemes of work, exam specs, textbook chapters, reports, research, policies. Reading, cross-referencing and summarising them eats hours. <strong>NotebookLM</strong> is Google's free research tool that turns a pile of <em>your own</em> sources into something you can question, summarise, and even turn into a revision podcast — and it shows you exactly where every answer came from.</p>
+    <p>It's the AI tool teachers tend to fall in love with, because it's grounded in real documents rather than making things up. This bonus module gives you the full tour.</p>
+  </section>
+
+  <!-- 2 THE IDEA -->
+  <section>
+    <span class="kicker"><span class="num">2</span> The idea</span>
+    <h2>An expert that has only read <em>your</em> sources</h2>
+    <p>A normal chatbot (ChatGPT, Copilot, Gemini) answers from everything it learned in training, plus the open web. NotebookLM is different: you give it a set of <strong>sources</strong>, and it answers <em>only</em> from those — citing the exact passage each time.</p>
+    <div class="vs">
+      <div class="a"><span class="t">NotebookLM</span>Grounded in the sources you upload. Every claim is footnoted to a source you can click and check. Far less likely to "hallucinate".</div>
+      <div class="b"><span class="t">A normal chatbot</span>Draws on general training and the web. Brilliant for drafting and ideas, but you can't always see where a fact came from.</div>
+    </div>
+    <div class="note"><strong>The mental model:</strong> a normal chatbot is a clever generalist; NotebookLM is a research assistant who has read <em>exactly</em> the documents you handed over — and nothing else. That makes it trustworthy for working <em>with</em> specific materials.</div>
+  </section>
+
+  <!-- 3 THE THREE PANELS -->
+  <section>
+    <span class="kicker"><span class="num">3</span> Watch it work</span>
+    <h2>A notebook has three panels</h2>
+    <p>Open <a href="https://notebooklm.google.com" target="_blank" rel="noopener">notebooklm.google.com</a>, create a notebook, and you'll see three areas:</p>
+    <div class="panels">
+      <div class="pnl"><span class="em">📥</span><h3>Sources (left)</h3><p>The documents you've added. NotebookLM only "knows" what's here.</p></div>
+      <div class="pnl"><span class="em">💬</span><h3>Chat (centre)</h3><p>Ask questions; get cited answers drawn from your sources.</p></div>
+      <div class="pnl"><span class="em">🎛️</span><h3>Studio (right)</h3><p>Turn your sources into audio, video, mind maps, quizzes and more.</p></div>
+    </div>
+    <p>The rest of this module walks through all three — and you'll build a real notebook as you go.</p>
+  </section>
+
+  <!-- 4 YOUR TURN: SOURCES + DISCOVER -->
+  <section>
+    <span class="kicker"><span class="num">4</span> Your turn — add some sources</span>
+    <h2>Two ways to fill the Sources panel</h2>
+    <h3>A) Upload what you already have</h3>
+    <ol class="steps">
+      <li>Click <strong>+ Add source</strong> in the Sources panel.</li>
+      <li>Choose a type: <strong>upload a PDF</strong>, pick a <strong>Google Doc or Slides</strong>, paste a <strong>website link</strong> or <strong>YouTube URL</strong>, or paste <strong>copied text</strong>.</li>
+      <li>It's processed in seconds and appears in the list, ready to question. Add several — NotebookLM works across <em>all</em> your sources at once.</li>
+    </ol>
+    <h3 style="margin-top:18px">B) Let it find sources for you — "Discover"</h3>
+    <p>No sources yet? NotebookLM can research the web for you.</p>
+    <ol class="steps">
+      <li>Click <strong>Discover</strong> (the magnifying-glass-with-sparkles, next to Add source).</li>
+      <li>Describe your topic in plain English — e.g. "evidence-based strategies for improving literacy at Key Stage 3".</li>
+      <li>It scans the web and returns up to ~10 relevant sources, each with a short summary of why it's relevant.</li>
+      <li>Tick the ones you want and <strong>add them in one click</strong>. (Feeling adventurous? "I'm feeling curious" suggests a random topic.)</li>
+    </ol>
+    <div class="note">⚠️ <strong>Always sense-check discovered sources</strong> before trusting them — NotebookLM finds them on the open web, so check they're credible and current, exactly as you would with any research.</div>
+  </section>
+
+  <!-- 5 CHAT -->
+  <section>
+    <span class="kicker"><span class="num">5</span> Use the chat panel</span>
+    <h2>Ask, then verify with one click</h2>
+    <p>Type a question in the centre panel. The answer comes back with little numbered <strong>citations</strong> — click one to jump to the exact passage in the source it came from. Some starters to try:</p>
+    <div class="prompt"><span class="lbl">Summarise</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Summarise the key points across all my sources as ten concise bullet points a busy teacher could skim.</span></div>
+    <div class="prompt"><span class="lbl">Cross-reference</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Where do these sources agree and where do they disagree? Quote the relevant lines and cite them.</span></div>
+    <div class="prompt"><span class="lbl">Make it usable</span><button class="copy" onclick="copyText(this)">Copy</button><span class="copytext">Turn the main ideas into a one-page explanation pitched at a non-specialist colleague, in British English.</span></div>
+    <div class="note"><strong>The habit that matters:</strong> click the citations. Because answers are grounded and footnoted, you can verify in seconds — which is what makes NotebookLM trustworthy for real work.</div>
+  </section>
+
+  <!-- 6 STUDIO -->
+  <section>
+    <span class="kicker"><span class="num">6</span> The Studio — turn sources into outputs</span>
+    <h2>One set of sources, many formats</h2>
+    <p>The Studio panel (right) generates ready-made resources from your sources. Pick one, wait a moment, and it's made. The current line-up:</p>
+    <div class="grid">
+      <div class="g"><span class="em">🎧</span><b>Audio Overview</b>A podcast-style chat between two AI hosts — brilliant revision-on-the-commute. You can even join and ask questions live.</div>
+      <div class="g"><span class="em">🎬</span><b>Video Overview</b>Narrated visuals; choose explainer vs brief, language and a visual style.</div>
+      <div class="g"><span class="em">🧠</span><b>Mind Map</b>A clickable diagram of how the ideas connect — great for the board.</div>
+      <div class="g"><span class="em">📄</span><b>Reports</b>Auto-written, cited documents: study guide, briefing doc, FAQ, timeline and more.</div>
+      <div class="g"><span class="em">🃏</span><b>Flashcards</b>Key-concept cards for retrieval practice.</div>
+      <div class="g"><span class="em">❓</span><b>Quiz</b>Auto-generated questions to test understanding.</div>
+      <div class="g"><span class="em">🖼️</span><b>Slide Deck</b>A presentation drafted straight from your sources.</div>
+      <div class="g"><span class="em">📊</span><b>Infographic</b>A visual one-pager of the key points.</div>
+      <div class="g"><span class="em">🗂️</span><b>Data Table</b>Pulls structured facts into a sortable table.</div>
+    </div>
+    <p style="font-size:.93rem;color:var(--ink-soft)">You can run several at once — listen to an Audio Overview while a Mind Map or Study Guide generates. Everything is built from (and cited to) your sources.</p>
+    <div class="current">
+      <div class="hd">Current as of June 2026</div>
+      NotebookLM changes fast — Studio gained Flashcards, Quiz, Slide Deck, Infographic and Data Table over the last year, and free vs <strong>NotebookLM Plus</strong> (via Google AI Pro/Ultra or a Workspace plan) sets the limits on sources and notebooks. If a tile here has moved or been renamed, the idea — "turn my sources into X" — still holds.
+    </div>
+  </section>
+
+  <!-- 7 DATA SAFETY -->
+  <section class="safety">
+    <span class="kicker"><span class="num">7</span> <span class="shield">🛡️</span> Data-safety checkpoint</span>
+    <h2>Mind what you upload</h2>
+    <p>NotebookLM is a brilliant tool — but it's a <strong>Google</strong> product, and our school's approved tool for real pupil/staff data is <strong>Microsoft 365 Copilot Chat</strong> (the green shield). So:</p>
+    <ul class="clean">
+      <li><strong>Great to upload:</strong> your own non-personal materials — schemes of work, your lesson resources, exam specs, published research, public documents, textbook chapters you're licensed to use.</li>
+      <li><strong>Never upload:</strong> anything with identifiable pupils or staff in it — class lists, mark books, reports, SEND/EHCP paperwork, safeguarding notes, or photos of pupils.</li>
+      <li>NotebookLM doesn't use your uploads to train its models — but that <em>doesn't</em> replace school approval or data minimisation. Personal Google accounts have no data agreement with the school.</li>
+    </ul>
+    <div class="swap">
+      <div class="no"><span class="tag">✗ Don't upload</span>"Year 11 mock results &amp; intervention notes (with names).xlsx"</div>
+      <div class="yes"><span class="tag">✓ Fine to upload</span>The exam board spec + your revision booklet, then build a quiz and audio overview from them.</div>
+    </div>
+    <p style="margin-bottom:0">Rule of thumb: if it names a real child or colleague, it doesn't go in. Keep it to documents, not data about people.</p>
+  </section>
+
+  <!-- 8 SELF CHECK -->
+  <section>
+    <span class="kicker"><span class="num">8</span> Self-check</span>
+    <h2>Have you got it?</h2>
+    <p class="progress"><b id="pcount">0</b> of 5 ticked</p>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I can explain how NotebookLM differs from a normal chatbot (grounded in <em>my</em> sources, with citations).</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I've added a source — by upload <strong>and</strong> via <strong>Discover</strong>.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I asked a question in the chat and <strong>clicked a citation</strong> to verify it.</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I created at least one Studio output (audio, mind map, quiz, report…).</div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="box">✓</div><div class="txt">I know to keep pupil/staff personal data out — documents, not data about people.</div></div>
+
+    <button class="toggle-btn" onclick="toggleReveal('exemplar')">Show me a great teacher use ↓</button>
+    <div class="reveal" id="exemplar">
+      <div class="note" style="margin-top:6px"><strong>Revision in 10 minutes:</strong> upload the exam board spec + your revision booklet + a relevant textbook chapter. Ask the chat to "list the trickiest concepts students get wrong, with citations". Then in Studio, generate a <strong>Study Guide</strong>, a <strong>Quiz</strong>, and an <strong>Audio Overview</strong> students can listen to — all grounded in the exact materials your class uses, no pupil data anywhere.</div>
+    </div>
+
+    <h3 style="margin-top:20px">How confident are you with NotebookLM?</h3>
+    <div class="lights">
+      <div class="light r" onclick="setLight(this)"><span class="em">🔴</span>Still unsure</div>
+      <div class="light y" onclick="setLight(this)"><span class="em">🟡</span>Getting there</div>
+      <div class="light g" onclick="setLight(this)"><span class="em">🟢</span>Confident</div>
+    </div>
+    <div class="note" style="margin-top:16px">🎒 <strong>Apply it this week:</strong> pick one topic, build a notebook from the materials you already use, and make one Studio output for your class.</div>
+  </section>
+
+  <!-- WHERE NEXT -->
+  <section class="next">
+    <span class="arrow">★</span>
+    <h2>Bonus complete</h2>
+    <p>You've added NotebookLM to your toolkit — a research assistant that stays grounded in the documents you trust. Head back to the dashboard to keep building your skills.</p>
+    <p style="margin-top:10px"><strong>↩ Back to your pathways</strong></p>
+    <div style="margin-top:22px">
+      <a href="index.html" data-done="NLM" style="display:inline-block;background:#e8b04b;color:#3a2a06;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:11px;font-size:1.02rem;box-shadow:0 4px 14px rgba(0,0,0,.18)">✓ Mark complete &amp; back to dashboard →</a>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+  function copyText(btn){var t=btn.parentElement.querySelector('.copytext').innerText.trim();navigator.clipboard.writeText(t).then(showToast).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);});}
+  var toastTimer;function showToast(){var el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},1700);}
+  function toggleReveal(id){var el=document.getElementById(id);el.classList.toggle('show');var btn=event.currentTarget;if(el.classList.contains('show')){btn.innerHTML=btn.innerHTML.replace('↓','↑');}else{btn.innerHTML=btn.innerHTML.replace('↑','↓');}}
+  function toggleCheck(el){el.classList.toggle('done');document.getElementById('pcount').innerText=document.querySelectorAll('.check-item.done').length;}
+  function setLight(el){el.parentElement.querySelectorAll('.light').forEach(function(l){l.classList.remove('sel')});el.classList.add('sel');}
+  document.querySelectorAll('a[data-done]').forEach(function(a){a.addEventListener('click',function(){try{var id=a.getAttribute('data-done');var d=JSON.parse(localStorage.getItem('saip_done')||'[]');if(d.indexOf(id)<0){d.push(id);localStorage.setItem('saip_done',JSON.stringify(d));}}catch(e){}});});
+</script>
+</body>
+</html>

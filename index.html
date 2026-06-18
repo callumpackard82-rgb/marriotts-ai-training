@@ -10,6 +10,7 @@
     --teal:#d0452e;--teal-deep:#9e3320;--teal-tint:#fbe9e4;
     --plum:#3f6e72;--plum-deep:#294b4e;--plum-tint:#e6eef0;
     --build:#565b5e;--build-deep:#3a3f42;--build-tint:#eceef0;
+    --gold:#9a6716;
     --amber:#e8b04b;--safe:#1f7a4d;--safe-tint:#e8f3ec;
     --shadow:0 1px 2px rgba(31,36,33,.05),0 6px 22px rgba(31,36,33,.07);
   }
@@ -71,6 +72,7 @@
   .pw-foundations .pw-head{background:linear-gradient(150deg,#d0452e,#9e3320)}
   .pw-practitioner .pw-head{background:linear-gradient(150deg,#3f6e72,#294b4e)}
   .pw-builder .pw-head{background:linear-gradient(150deg,#565b5e,#34383b)}
+  .pw-bonus .pw-head{background:linear-gradient(150deg,#9a6716,#6f4a12)}
   .pw-body{background:var(--card);padding:14px 16px}
   /* module card */
   .mod{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:12px;transition:.15s;border:1px solid transparent}
@@ -89,9 +91,11 @@
   .pw-foundations .mod .toggle.on{background:var(--teal);border-color:var(--teal)}
   .pw-practitioner .mod .toggle.on{background:var(--plum);border-color:var(--plum)}
   .pw-builder .mod .toggle.on{background:var(--build);border-color:var(--build)}
+  .pw-bonus .mod .toggle.on{background:var(--gold);border-color:var(--gold)}
   .pw-foundations .mod .open:hover{background:var(--teal);border-color:var(--teal)}
   .pw-practitioner .mod .open:hover{background:var(--plum);border-color:var(--plum)}
   .pw-builder .mod .open:hover{background:var(--build);border-color:var(--build)}
+  .pw-bonus .mod .open:hover{background:var(--gold);border-color:var(--gold)}
   @media(max-width:560px){.mod .num{display:none}.mod .open{padding:8px 11px}}
   /* footer */
   footer{text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
@@ -169,7 +173,7 @@
   </section>
 
   <footer>
-    <p>Staff AI Programme · 13 modules across three pathways. Progress is saved in this browser on this device — use your progress code above to move between devices.</p>
+    <p>Staff AI Programme · 13 core modules across three pathways, plus a bonus. Progress is saved in this browser on this device — use your progress code above to move between devices.</p>
     <button onclick="resetProgress()">Reset my progress</button>
   </footer>
 
@@ -201,9 +205,13 @@
         {id:"B2", t:"Vibe-coding with Claude Code", time:"18 min", f:"builder-vibe-coding-module.html"},
         {id:"B3", t:"The agentic-coding landscape", time:"12 min", f:"builder-agentic-landscape-module.html"},
         {id:"B4", t:"Build & share a tool, responsibly", time:"16 min", f:"builder-share-responsibly-module.html"}
+      ]},
+    { key:"bonus", tag:"★ Bonus · Optional extra", title:"Bonus", blurb:"Extra tools worth a look, beyond the three core pathways.",
+      modules:[
+        {id:"NLM", t:"Google NotebookLM", time:"20 min", f:"bonus-notebooklm-module.html"}
       ]}
   ];
-  var TOTAL = 13;
+  var TOTAL = 14;
 
   // ---- State (localStorage) ----
   function getDone(){ try{ return JSON.parse(localStorage.getItem("saip_done")||"[]"); }catch(e){ return []; } }
