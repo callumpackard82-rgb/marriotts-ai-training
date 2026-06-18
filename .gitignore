@@ -1,2 +1,7 @@
 # Local Claude Code tooling — not part of the website
 .claude/
+
+# Unrelated local files (lesson/worksheet generation) — not part of the training site
+gen_lesson_pptx.py
+gen_worksheet.py
+slide_qa/
